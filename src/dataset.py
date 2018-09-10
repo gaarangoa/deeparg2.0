@@ -45,13 +45,16 @@ def obtain_labels(labels_file=''):
     group_labels = []
     category_labels = []
 
+    categories = {i: ix for ix, i in enumerate(categories)}
+    groups = {i: ix for ix, i in enumerate(groups)}
+
     for i in open(labels_file):
         i = i.strip().split('\t')
         #
         arg_id, arg_classes, arg_name, arg_group = i[0].split("|")
         #
-        category_label = np.zeros(total_categories+1)
-        group_label = np.zeros(total_groups+1)
+        category_label = np.zeros(total_categories)
+        group_label = np.zeros(total_groups)
         for arg_class in arg_classes.split(":"):
             category_label[categories[arg_class]] = 1
         #

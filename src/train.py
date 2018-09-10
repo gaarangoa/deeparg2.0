@@ -1,8 +1,12 @@
 import tensorflow as tf
 from tensorflow import keras
-
+from tensorflow.keras.callbacks import TensorBoard
+from time import time
 from dataset import obtain_labels, obtain_dataset
+from model import DeepARG
 
+
+# load dataset
 classes, groups, index, group_labels, classes_labels = obtain_labels(
     labels_file='../database/dataset.ss.headers'
 )
@@ -12,57 +16,19 @@ dataset = obtain_dataset(
     index=index
 )
 
-embedding_size = 512
-total_arg_classes = len(classes)
-total_arg_groups = len(groups)
+train_dataset = dataset[:100]
+train_labels_class = classes_labels[:100]
+train_labels_group = group_labels[:100]
 
-# Input layer
-wordvectors_input = keras.Input(
-    shape=(embedding_size,),
-    name="wordvectors_input"
+deeparg = DeepARG(
+    dataset=dataset,
+    classes_labels=classes_labels,
+    group_labels=group_labels,
+    classes=classes,
+    groups=groups
 )
 
-# Hiden Layer
-wordvectors_nn_1 = keras.layers.Dense(
-    800,
-    activation='relu'
-)(wordvectors_input)
-
-wordvectors_nn_2 = keras.layers.Dense(
-    600,
-    activation='relu'
-)(wordvectors_nn_1)
-
-wordvectors_nn_3 = keras.layers.Dense(
-    400,
-    activation='relu'
-)(wordvectors_nn_2)
-
-# Output layers
-# arg groups (names)
-arg_groups_output = keras.layers.Dense(
-    total_arg_groups,
-    activation="sigmoid",
-    name="arg_group_output"
-)(wordvectors_nn_2)
-
-# arg classes (antibiotics)
-arg_class_output = keras.layers.Dense(
-    total_arg_classes,
-    activation="sigmoid",
-    name="arg_class_output"
-)(wordvectors_nn_2)
-
-# Topology of the model
-model = keras.models.Model(
-    inputs=[wordvectors_input],
-    outputs=[
-        arg_class_output,
-        arg_groups_output
-    ]
-)
-
-# model.compile(optimizer='adam', loss='categorical_crossentropy')
+model = deeparg.model()
 
 model.compile(
     optimizer='adam',
@@ -76,16 +42,22 @@ model.compile(
     }
 )
 
+# Add tensorboard
+tensorboard = TensorBoard(log_dir="logs/{}".format(time()))
+
 # And trained it via:
 model.fit(
     {
-        'wordvectors_input': headline_data,
+        'wordvectors_input': train_dataset,
         # 'aux_input': additional_data
     },
     {
-        'arg_class_output': labels,
-        'arg_group_output': labels
+        'arg_class_output': train_labels_class,
+        'arg_group_output': train_labels_group
     },
     epochs=50,
-    batch_size=32
+    batch_size=32,
+    callbacks=[tensorboard]
 )
+
+# /Library/Frameworks/Python.framework/Versions/3.6/bin/tensorboard --logdir=src/logs/
