@@ -12,8 +12,8 @@ import logging
 @click.option('--inputfile', required=True, help='input fasta file')
 @click.option('--modeldir', default='', required=True, help='directory where the model was downloaded')
 @click.option('--outdir', default='', required=True, help='output directory where to store the results')
-@click.option('--minp', default=0.1, help='minimum probability')
-@click.option('--kmer', default=11, help='kmer length (default: 11)')
+@click.option('--minp', default=0.1, help='minimum probability [default: 0.1]')
+@click.option('--kmer', default=11, help='kmer length [default: 11]')
 def predict(inputfile, modeldir, outdir, kmer, minp):
     """
 
