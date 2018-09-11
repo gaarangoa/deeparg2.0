@@ -10,7 +10,7 @@ import json
 
 
 # tensorboard
-tensorboard = TensorBoard(log_dir="logs/{}".format(time()))
+tensorboard = TensorBoard(log_dir="../logs/{}".format(time()))
 
 # load dataset
 classes, groups, index, group_labels, classes_labels = obtain_labels(
@@ -69,7 +69,7 @@ model.fit(
         'arg_class_output': train_labels_class,
         'arg_group_output': train_labels_group
     },
-    epochs=15,
+    epochs=50,
     batch_size=32,
     validation_split=0.2,
     callbacks=[tensorboard],

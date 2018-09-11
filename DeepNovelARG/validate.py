@@ -13,17 +13,11 @@ dataset_wordvectors = obtain_dataset_wordvectors(
     labels_file='../model/dataset.no_centroids.ss.headers',
 )
 
-dataset_alignments, alignment_features = obtain_dataset_alignments(
-    dataset_file='../model/dataset.no_centroids_vs_centroids.tsv',
-    features_file='../model/centroids.ids',
-    file_order='../model/dataset.no_centroids.ss.headers'
-)
 
 model = keras.models.load_model('../model/deeparg2.h5')
 ynew = model.predict(
     {
         'wordvectors_input': dataset_wordvectors,
-        'alignments_input': dataset_alignments
     },
 )
 
