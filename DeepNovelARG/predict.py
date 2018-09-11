@@ -21,17 +21,10 @@ def predict(indir, modeldir, minp):
         labels_file=indir+'/dataset.no_centroids.ss.headers',
     )
 
-    dataset_alignments, alignment_features = obtain_dataset_alignments(
-        dataset_file=indir+'/dataset.no_centroids_vs_centroids.tsv',
-        features_file=modeldir+'/centroids.ids',
-        file_order=indir+'/dataset.no_centroids.ss.headers'
-    )
-
     model = keras.models.load_model(modeldir+'/deeparg2.h5')
     ynew = model.predict(
         {
             'wordvectors_input': dataset_wordvectors,
-            'alignments_input': dataset_alignments
         },
     )
 
