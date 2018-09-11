@@ -2,7 +2,7 @@ from tensorflow import keras
 from DeepNovelARG.dataset import obtain_labels, obtain_dataset_wordvectors, obtain_dataset_alignments
 import json
 import click
-from GeneTools.fasta2kmers import fasta2kmers
+from DeepNovelARG.fasta2kmers import fasta2kmers
 import os
 from tqdm import tqdm
 import logging

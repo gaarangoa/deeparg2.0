@@ -3,12 +3,16 @@ This repository contains the update of deepARG (deep learning based approach for
 
 ## Requierements
 
-* Install genetools suit
+* Install fasttext
 
-    git clone https://github.com/gaarangoa/genomic-scripts.git
-    cd genomic-scripts
-    pip3 install . --upgrade --user
+    wget https://github.com/facebookresearch/fastText/archive/v0.1.0.zip
+    unzip v0.1.0.zip
+    cd fastText-0.1.0
+    make
 
 ## Install
 
-    git clone
+    git clone https://github.com/gaarangoa/deeparg2.0.git
+    cd deeparg2.0
+    pip3 install . --upgrade --user
+

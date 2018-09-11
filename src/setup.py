@@ -3,9 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='dnovelARG',
     version='0.1',
-    packages=find_packages(
-        exclude=("model", )
-    ),
+    packages=find_packages(),
     include_package_data=False,
     install_requires=[
         'Click',
