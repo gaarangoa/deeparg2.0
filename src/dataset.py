@@ -1,15 +1,56 @@
 import numpy as np
-# get the data
+from sklearn.preprocessing import MinMaxScaler
+from tensorflow.keras.utils import normalize
 
 
-def obtain_dataset(dataset_file='', index=[]):
+def obtain_dataset_wordvectors(dataset_file='', index=[]):
     dataset = []
     for ix, i in enumerate(open(dataset_file)):
         i = i.split()
         item = np.array([float(k) for k in i[index[ix]:]])
         dataset.append(item)
+    # scaler = MinMaxScaler()
+    # return scaler.fit_transform(np.array(dataset))
+    return normalize(np.array(dataset), axis=-1, order=2)
 
-    return np.array(dataset)
+
+def obtain_dataset_alignments(dataset_file='', features_file='', file_order=''):
+    ''' From an alignment file generate a matrix of values,
+        the order of the matrix features depends on the
+        features_file, it has to be the same all the time
+
+        file order: contains a list with the entries in the order
+                    that they are used for the other sets. For instance,
+                    the gene_1 in the fasta file, has to be the same 1
+                    position in this file.
+        features file: this file contains the list of genes that were
+                    used as features, also known as the centroids.
+    '''
+
+    dataset = {}
+    features = {i.strip().split()[0]: ix for ix,
+                i in enumerate(open(features_file))}
+
+    for i in open(dataset_file):
+        i = i.split()
+        try:
+            assert(dataset[i[0]])
+        except Exception as e:
+            dataset[i[0]] = np.zeros(len(features))
+        #
+        dataset[i[0]][features[i[1]]] = float(i[-1])
+
+    samples_oder = [i.strip().split('\t')[0] for i in open(file_order)]
+
+    ordered_dataset = []
+    for i in samples_oder:
+        try:
+            ordered_dataset.append(dataset[i])
+        except Exception as e:
+            ordered_dataset.append(np.zeros(len(features)))
+    scaler = MinMaxScaler()
+
+    return [scaler.fit_transform(np.array(ordered_dataset)), features]
 
 
 def obtain_labels(labels_file=''):

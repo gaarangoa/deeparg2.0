@@ -2,26 +2,56 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.callbacks import TensorBoard
 from time import time
-from dataset import obtain_labels, obtain_dataset
+from dataset import obtain_labels, obtain_dataset_wordvectors, obtain_dataset_alignments
 from model import DeepARG
+import numpy as np
+from sklearn.model_selection import train_test_split
+import json
 
+
+# tensorboard
+tensorboard = TensorBoard(log_dir="logs/{}".format(time()))
 
 # load dataset
 classes, groups, index, group_labels, classes_labels = obtain_labels(
-    labels_file='../database/dataset.ss.headers'
+    labels_file='../model/dataset.no_centroids.ss.headers'
 )
 
-dataset = obtain_dataset(
-    dataset_file='../database/dataset.sv.txt',
+dataset_wordvectors = obtain_dataset_wordvectors(
+    dataset_file='../model/dataset.no_centroids.ss.sv',
     index=index
 )
 
-train_dataset = dataset[:100]
-train_labels_class = classes_labels[:100]
-train_labels_group = group_labels[:100]
+dataset_alignments, alignment_features = obtain_dataset_alignments(
+    dataset_file='../model/dataset.no_centroids_vs_centroids.tsv',
+    features_file='../model/centroids.ids',
+    file_order='../model/dataset.no_centroids.ss.headers'
+)
+
+print("Alignment dataset: ", dataset_alignments.shape,
+      "Word Vectors dataset: ",  dataset_wordvectors.shape)
+
+reverse_classes_dict = {classes[i]: i for i in classes}
+reverse_groups_dict = {groups[i]: i for i in groups}
+dataset_index = np.array([ix for ix, i in enumerate(dataset_wordvectors)])
+
+train_dataset_wordvectors, test_dataset_wordvectors, target_train, target_val = train_test_split(
+    dataset_wordvectors,
+    dataset_index,
+    test_size=0.2
+)
+
+train_dataset_alignments = dataset_alignments[target_train]
+test_dataset_alignments = dataset_alignments[target_val]
+
+train_labels_class = classes_labels[target_train]
+train_labels_group = group_labels[target_train]
+test_labels_class = classes_labels[target_val]
+test_labels_group = group_labels[target_val]
 
 deeparg = DeepARG(
-    dataset=dataset,
+    input_dataset_wordvectors_size=dataset_wordvectors.shape[1],
+    input_dataset_alignments_size=dataset_alignments.shape[1],
     classes_labels=classes_labels,
     group_labels=group_labels,
     classes=classes,
@@ -33,31 +63,41 @@ model = deeparg.model()
 model.compile(
     optimizer='adam',
     loss={
-        'arg_group_output': 'categorical_crossentropy',
-        'arg_class_output': 'categorical_crossentropy'
+        # 'arg_group_output': 'categorical_crossentropy',
+        'arg_class_output': 'binary_crossentropy'
     },
     loss_weights={
-        'arg_group_output': 1.0,
+        # 'arg_group_output': 1.0,
         'arg_class_output': 1.0
-    }
+    },
+    metrics=['accuracy']
 )
-
-# Add tensorboard
-tensorboard = TensorBoard(log_dir="logs/{}".format(time()))
 
 # And trained it via:
 model.fit(
     {
-        'wordvectors_input': train_dataset,
-        # 'aux_input': additional_data
+        'wordvectors_input': train_dataset_wordvectors,
+        'alignments_input': train_dataset_alignments
     },
     {
         'arg_class_output': train_labels_class,
-        'arg_group_output': train_labels_group
+        # 'arg_group_output': train_labels_group
     },
-    epochs=50,
+    epochs=20,
     batch_size=32,
+    validation_split=0.2,
     callbacks=[tensorboard]
 )
 
-# /Library/Frameworks/Python.framework/Versions/3.6/bin/tensorboard --logdir=src/logs/
+json.dump(
+    {
+        'classes_dict': classes,
+        'groups_dict': groups,
+        'reverse_classes_dict': reverse_classes_dict,
+        'reverse_groups_dict': reverse_groups_dict
+    },
+    open('../model/deearg2.parameters.json', 'w')
+)
+
+
+model.save('../model/deeparg2.h5')
