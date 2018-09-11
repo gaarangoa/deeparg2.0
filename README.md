@@ -10,6 +10,12 @@ This repository contains the update of deepARG (deep learning based approach for
         cd fastText-0.1.0
         make
 
+### Download model to local machine
+
+    wget https://bench.cs.vt.edu/ftp/data/gustavo1/novelDeepARG/model.gz
+    gunzip model.gz
+
+
 ## Install
 
     git clone https://github.com/gaarangoa/deeparg2.0.git
