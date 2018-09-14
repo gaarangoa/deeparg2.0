@@ -88,7 +88,7 @@ def train(inputdir, outdir):
             'reverse_classes_dict': reverse_classes_dict,
             'reverse_groups_dict': reverse_groups_dict
         },
-        open(outputdir'/deearg2.parameters.json', 'w')
+        open(outdir+'/deearg2.parameters.json', 'w')
     )
 
-    model.save(outputdir+'/deeparg2.h5')
+    model.save(outdir+'/deeparg2.h5')
