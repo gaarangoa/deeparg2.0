@@ -16,6 +16,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        dnovelARG=DeepNovelARG.entry:cli
+        deepARG+=DeepNovelARG.entry:cli
     ''',
 )

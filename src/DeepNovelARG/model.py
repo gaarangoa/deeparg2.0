@@ -18,14 +18,14 @@ class DeepARG():
 
         # Hiden Layer
         wordvectors_nn_1 = keras.layers.Dense(
-            800,
+            1000,
             activation='relu'
         )(wordvectors_input)
 
         wordvectors_dropout_1 = keras.layers.Dropout(0.2)(wordvectors_nn_1)
 
         wordvectors_nn_2 = keras.layers.Dense(
-            600,
+            800,
             activation='relu'
         )(wordvectors_dropout_1)
 
@@ -45,18 +45,29 @@ class DeepARG():
 
         # Output layers
         # arg groups (names)
+
+        arg_groups_hidden_input = keras.layers.Dense(
+            300,
+            activation='relu'
+        )(wordvectors_nn_4)
+
         arg_groups_output = keras.layers.Dense(
             self.total_arg_groups,
             activation="sigmoid",
             name="arg_group_output"
-        )(wordvectors_nn_4)
+        )(arg_groups_hidden_input)
 
         # arg classes (antibiotics)
+        arg_class_hidden_input = keras.layers.Dense(
+            100,
+            activation='relu'
+        )(wordvectors_nn_4)
+
         arg_class_output = keras.layers.Dense(
             self.total_arg_classes,
             activation="sigmoid",
             name="arg_class_output"
-        )(wordvectors_nn_4)
+        )(arg_class_hidden_input)
 
         # Topology of the model
         _model = keras.models.Model(
