@@ -13,9 +13,9 @@ import click
 @click.command()
 @click.option('--inputdir', required=True, help='input directory with the output from fasta2vec')
 @click.option('--outdir', default='', required=True, help='output directory where to store the model')
-@click.option('--epoch', default=50, required=False, help='number of epochs to run the model')
-@click.option('--ptrain', default=0.3, required=False, help='fraction of the dataset used for training')
-@click.option('--batch', default=32, required=False, help='batch size for using during training')
+@click.option('--epoch', default=10, required=False, help='number of epochs to run the model [default 10]')
+@click.option('--ptrain', default=0.3, required=False, help='fraction of the dataset used for training [default 0.3]')
+@click.option('--batch', default=32, required=False, help='batch size for using during training [default 32]')
 def train(inputdir, outdir, epoch, ptrain, batch):
     # tensorboard
     tensorboard = TensorBoard(log_dir=outdir+"/logs/{}".format(time()))
