@@ -11,8 +11,8 @@ import click
 
 
 @click.command()
-@click.option('--inputdir', required=True, help='input fasta file')
-@click.option('--outdir', default='', required=True, help='output directory where to store the results')
+@click.option('--inputdir', required=True, help='input directory with the output from fasta2vec')
+@click.option('--outdir', default='', required=True, help='output directory where to store the model')
 def train(inputdir, outdir):
     # tensorboard
     tensorboard = TensorBoard(log_dir=outdir+"/logs/{}".format(time()))
