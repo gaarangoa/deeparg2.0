@@ -10,7 +10,7 @@ import logging
 
 @click.command()
 @click.option('--inputfile', required=True, help='input fasta file')
-@click.option('--modeldir', default='', required=True, help='directory where the model was downloaded')
+@click.option('--modeldir', default='', required=True, help='directory where the word2vec model was downloaded')
 @click.option('--outdir', default='', required=True, help='output directory where to store the results')
 @click.option('--kmer', default=11, help='kmer length [default: 11]')
 def fasta2vec(inputfile, modeldir, outdir, kmer):

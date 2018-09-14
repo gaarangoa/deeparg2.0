@@ -22,5 +22,27 @@ This repository contains the update of deepARG (deep learning based approach for
     cd deeparg2.0
     pip3 install . --upgrade --user
 
+## Training
+
+You need to make sure that your fasta file header follows this schema:
+
+    >gene_id|arg_category|arg_name|arg_group
+
+arg_name refers to the name of the arg e.g., OXA-1
+arg_group refers to the grouping of very similar args, for instance OXA
+
+
+* First convert the fasta file to a word vector representation
+
+        deepARG+ fasta2vec --help
+
+Check the log file to make sure the script ran without problems.
+
+* Second, run the training
+
+        deepARG+ train --help
+
+Thus, the model file will be generated
+
 
 ## Usage
