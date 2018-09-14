@@ -1,6 +1,7 @@
 import click
 from DeepNovelARG.predict import predict
 from DeepNovelARG.fasta2vec import fasta2vec
+from DeepNovelARG.train import train
 
 
 @click.group()
@@ -14,3 +15,4 @@ def cli():
 
 cli.add_command(predict)
 cli.add_command(fasta2vec)
+cli.add_command(train)
