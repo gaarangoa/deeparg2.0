@@ -2,8 +2,8 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.callbacks import TensorBoard
 from time import time
-from dataset import obtain_labels, obtain_dataset_wordvectors, obtain_dataset_alignments
-from model import DeepARG
+from DeepNovelARG.dataset import obtain_labels, obtain_dataset_wordvectors, obtain_dataset_alignments
+from DeepNovelARG.model import DeepARG
 import numpy as np
 from sklearn.model_selection import train_test_split
 import json
