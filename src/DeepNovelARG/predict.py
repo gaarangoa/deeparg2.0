@@ -67,7 +67,7 @@ def predict(inputfile, modeldir, outdir, kmer, minp):
 
     log.info("Loading Neural Network metadata")
     # load metadata from the trained model
-    metadata = json.load(open(modeldir+'/deearg2.parameters.json'))
+    metadata = json.load(open(modeldir+'/deeparg2.parameters.json'))
 
     # load file that contains the order in which the sequences are processed
     log.info(

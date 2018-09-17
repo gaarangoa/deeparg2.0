@@ -91,7 +91,7 @@ def train(inputdir, outdir, epoch, ptrain, batch):
             'reverse_classes_dict': reverse_classes_dict,
             'reverse_groups_dict': reverse_groups_dict
         },
-        open(outdir+'/deearg2.parameters.json', 'w')
+        open(outdir+'/deeparg2.parameters.json', 'w')
     )
 
     model.save(outdir+'/deeparg2.h5')
