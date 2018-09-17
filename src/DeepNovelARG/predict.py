@@ -6,6 +6,7 @@ from DeepNovelARG.fasta2kmers import fasta2kmers
 import os
 from tqdm import tqdm
 import logging
+import sys
 
 
 @click.command()
@@ -21,10 +22,14 @@ def predict(inputfile, modeldir, outdir, kmer, minp):
 
     """
 
+    log_file = logging.FileHandler(filename=outdir + '/log',)
+    log_stdout = logging.StreamHandler(sys.stdout)
+    handlers = [log_file, log_stdout]
+
     logging.basicConfig(
-        filename=outdir + '/log',
         level=logging.DEBUG,
-        format="%(levelname)s %(asctime)s - %(message)s"
+        format="%(levelname)s %(asctime)s - %(message)s",
+        handlers=handlers
     )
 
     log = logging.getLogger()

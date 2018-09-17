@@ -8,6 +8,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import json
 import click
+import tensorflow.contrib.eager as tfe
 
 
 @click.command()
@@ -17,6 +18,13 @@ import click
 @click.option('--ptrain', default=0.3, required=False, help='fraction of the dataset used for training [default 0.3]')
 @click.option('--batch', default=32, required=False, help='batch size for using during training [default 32]')
 def train(inputdir, outdir, epoch, ptrain, batch):
+
+    # what device is using?
+    if tfe.num_gpus() <= 0:
+        print("Using CPU")
+    else:
+        print("Using GPU")
+
     # tensorboard
     tensorboard = TensorBoard(log_dir=outdir+"/logs/{}".format(time()))
 
