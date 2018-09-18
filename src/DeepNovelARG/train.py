@@ -28,35 +28,29 @@ def train(inputdir, outdir, epoch, ptrain, batch):
     # tensorboard
     tensorboard = TensorBoard(log_dir=outdir+"/logs/{}".format(time()))
 
-    # load training dataset
-    classes, groups, index, group_labels, classes_labels = obtain_labels(
+    # load training dataset wordvectors
+    classes, groups, index, train_group_labels, train_class_labels = obtain_labels(
         labels_file=inputdir+'/input.kmers.tsv.headers'
     )
 
-    dataset_wordvectors = obtain_dataset_wordvectors(
+    train_dataset_wordvectors, train_dataset_sequences = obtain_dataset_wordvectors(
         dataset_file=inputdir+'/input.kmers.tsv.sentences.wv',
         labels_file=inputdir+'/input.kmers.tsv.headers'
     )
 
     reverse_classes_dict = {int(classes[i]): i for i in classes}
     reverse_groups_dict = {int(groups[i]): i for i in groups}
-    dataset_index = np.array([ix for ix, i in enumerate(dataset_wordvectors)])
-
-    train_dataset_wordvectors, test_dataset_wordvectors, target_train, target_val = train_test_split(
-        dataset_wordvectors,
-        dataset_index,
-        test_size=0.0
+    dataset_index = np.array(
+        [ix for ix, i in enumerate(train_dataset_wordvectors)]
     )
 
-    train_labels_class = classes_labels[target_train]
-    train_labels_group = group_labels[target_train]
-    test_labels_class = classes_labels[target_val]
-    test_labels_group = group_labels[target_val]
+    print(train_dataset_sequences.shape[0])
 
     deeparg = DeepARG(
-        input_dataset_wordvectors_size=dataset_wordvectors.shape[1],
-        classes_labels=classes_labels,
-        group_labels=group_labels,
+        input_dataset_wordvectors_size=train_dataset_wordvectors.shape[1],
+        input_convolutional_dataset_size=train_dataset_sequences.shape[1],
+        classes_labels=train_class_labels,
+        group_labels=train_group_labels,
         classes=classes,
         groups=groups
     )
@@ -82,8 +76,8 @@ def train(inputdir, outdir, epoch, ptrain, batch):
             'wordvectors_input': train_dataset_wordvectors,
         },
         {
-            'arg_class_output': train_labels_class,
-            'arg_group_output': train_labels_group
+            'arg_class_output': train_class_labels,
+            'arg_group_output': train_group_labels
         },
         epochs=epoch,
         batch_size=batch,

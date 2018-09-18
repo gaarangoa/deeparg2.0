@@ -3,13 +3,31 @@ from tensorflow import keras
 
 
 class DeepARG():
-    def __init__(self, input_dataset_wordvectors_size=0, classes_labels=[], group_labels=[], classes=[], groups=[]):
+    def __init__(self, input_dataset_wordvectors_size=0, input_convolutional_dataset_size=2000, classes_labels=[], group_labels=[], classes=[], groups=[]):
         # setup parameters for model
         self.input_dataset_wordvectors_size = input_dataset_wordvectors_size
+        self.input_convolutional_dataset_size = input_convolutional_dataset_size
         self.total_arg_classes = len(classes)
         self.total_arg_groups = len(groups)
 
     def model(self):
+
+        # Convolutional Layer
+        convolutional_input = keras.Input(
+            shape=(self.input_convolutional_dataset_size,),
+            name="convolutional_input"
+        )
+
+        conv_nn = keras.layers.Conv1D(
+            16,
+            3,
+            input_shape=(None, self.input_convolutional_dataset_size, 1),
+            activation='elu',
+            padding='same',
+            name='encoder_conv0',
+            kernel_initializer='he_uniform'
+        )(convolutional_input)
+
         # Input layer
         wordvectors_input = keras.Input(
             shape=(self.input_dataset_wordvectors_size,),

@@ -2,17 +2,32 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.utils import normalize
 
+IUPAC_CODES = {'A': 1.8, 'C': 2.5, 'D': -3.5, 'E': -3.5, 'F': 2.8, 'G': -0.4, 'H': -3.2, 'I': 4.5, 'K': -3.9, 'L': 3.8,
+               'M': 1.9, 'N': -3.5, 'P': -1.6, 'Q': -3.5, 'R': -4.5, 'S': -0.8, 'T': -0.7, 'V': 4.2, 'W': -0.9, 'Y': -1.3, '*': -0.48}
+
+
+def aa2int(i):
+    try:
+        return IUPAC_CODES[i]
+    except Exception as e:
+        return IUPAC_CODES['*']
+
 
 def obtain_dataset_wordvectors(dataset_file='', labels_file=''):
     dataset = []
+    sequences = []
     index = [int(i.strip().split('\t')[1]) for i in open(labels_file)]
     for ix, i in enumerate(open(dataset_file)):
         i = i.split()
         item = np.array([float(k) for k in i[index[ix]:]])
+        item2 = np.array(
+            [[aa2int(i)] for i in "".join([k for k in i[:index[ix]]])]
+        )
         dataset.append(item)
+        sequences.append(item2)
     # scaler = MinMaxScaler()
     # return scaler.fit_transform(np.array(dataset))
-    return normalize(np.array(dataset), axis=-1, order=2)
+    return normalize(np.array(dataset), axis=-1, order=2), np.array(sequences)
 
 
 def obtain_dataset_alignments(dataset_file='', features_file='', file_order=''):
