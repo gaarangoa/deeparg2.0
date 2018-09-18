@@ -12,22 +12,74 @@ class DeepARG():
 
     def model(self):
 
-        # Convolutional Layer
+        ################################################
+        ################## Convolution #################
+        ################################################
         convolutional_input = keras.Input(
-            shape=(self.input_convolutional_dataset_size,),
+            shape=(self.input_convolutional_dataset_size, 1),
             name="convolutional_input"
         )
 
         conv_nn = keras.layers.Conv1D(
-            16,
-            3,
+            16, 3,
             input_shape=(None, self.input_convolutional_dataset_size, 1),
             activation='elu',
             padding='same',
             name='encoder_conv0',
             kernel_initializer='he_uniform'
         )(convolutional_input)
+        conv_nn = keras.layers.BatchNormalization(name='encoder_bn0')(conv_nn)
+        conv_nn = keras.layers.Conv1D(
+            24, 3,
+            activation='elu',
+            padding='same',
+            name='encoder_conv1',
+            kernel_initializer='he_uniform'
+        )(conv_nn)
+        conv_nn = keras.layers.BatchNormalization(name='encoder_bn1')(conv_nn)
+        conv_nn = keras.layers.MaxPooling1D()(conv_nn)
 
+        conv_nn = keras.layers.Conv1D(
+            32, 5,
+            activation='elu',
+            padding='same',
+            name='encoder_conv2',
+            kernel_initializer='he_uniform'
+        )(conv_nn)
+        conv_nn = keras.layers.BatchNormalization(name='encoder_bn2')(conv_nn)
+        conv_nn = keras.layers.Conv1D(
+            48, 5,
+            activation='elu',
+            padding='same',
+            name='encoder_conv3',
+            kernel_initializer='he_uniform'
+        )(conv_nn)
+        conv_nn = keras.layers.BatchNormalization(name='encoder_bn3')(conv_nn)
+        conv_nn = keras.layers.MaxPooling1D()(conv_nn)
+
+        conv_nn = keras.layers.Conv1D(
+            64, 7,
+            activation='elu',
+            padding='same',
+            name='encoder_conv4',
+            kernel_initializer='he_uniform'
+        )(conv_nn)
+        conv_nn = keras.layers.BatchNormalization(name='encoder_bn4')(conv_nn)
+        conv_nn = keras.layers.Conv1D(
+            96, 7,
+            activation='elu',
+            padding='same',
+            name='encoder_conv5',
+            kernel_initializer='he_uniform'
+        )(conv_nn)
+        conv_nn = keras.layers.BatchNormalization(name='encoder_bn5')(conv_nn)
+        conv_nn = keras.layers.MaxPooling1D()(conv_nn)
+
+        conv_nn = keras.layers.Flatten()(conv_nn)
+
+        ################################################
+        ################### Word Vectors ###############
+        ################################################
         # Input layer
         wordvectors_input = keras.Input(
             shape=(self.input_dataset_wordvectors_size,),
@@ -35,40 +87,43 @@ class DeepARG():
         )
 
         # Hiden Layer
-        wordvectors_nn_1 = keras.layers.Dense(
+        wv_nn = keras.layers.Dense(
             1000,
             activation='relu'
         )(wordvectors_input)
-
-        wordvectors_dropout_1 = keras.layers.Dropout(0.2)(wordvectors_nn_1)
-
-        wordvectors_nn_2 = keras.layers.Dense(
+        wv_nn = keras.layers.Dropout(0.2)(wv_nn)
+        wv_nn = keras.layers.Dense(
             800,
             activation='relu'
-        )(wordvectors_dropout_1)
-
-        wordvectors_dropout_2 = keras.layers.Dropout(0.2)(wordvectors_nn_2)
-
-        wordvectors_nn_3 = keras.layers.Dense(
+        )(wv_nn)
+        wv_nn = keras.layers.Dropout(0.2)(wv_nn)
+        wv_nn = keras.layers.Dense(
             400,
             activation='relu'
-        )(wordvectors_dropout_2)
-
-        wordvectors_dropout_3 = keras.layers.Dropout(0.2)(wordvectors_nn_3)
-
-        wordvectors_nn_4 = keras.layers.Dense(
+        )(wv_nn)
+        wv_nn = keras.layers.Dropout(0.2)(wv_nn)
+        wv_nn = keras.layers.Dense(
             200,
             activation='relu'
-        )(wordvectors_dropout_3)
+        )(wv_nn)
 
-        # Output layers
+        ################################################
+        #################### Merge #####################
+        ################################################
+
+        latent = keras.layers.concatenate(
+            [wv_nn, conv_nn]
+        )
+
+        ################################################
+        ################### Output #####################
+        ################################################
+
         # arg groups (names)
-
         arg_groups_hidden_input = keras.layers.Dense(
             300,
             activation='relu'
-        )(wordvectors_nn_4)
-
+        )(latent)
         arg_groups_output = keras.layers.Dense(
             self.total_arg_groups,
             activation="sigmoid",
@@ -79,8 +134,7 @@ class DeepARG():
         arg_class_hidden_input = keras.layers.Dense(
             100,
             activation='relu'
-        )(wordvectors_nn_4)
-
+        )(latent)
         arg_class_output = keras.layers.Dense(
             self.total_arg_classes,
             activation="sigmoid",
@@ -91,7 +145,7 @@ class DeepARG():
         _model = keras.models.Model(
             inputs=[
                 wordvectors_input,
-                # alignments_input
+                convolutional_input
             ],
             outputs=[
                 arg_class_output,

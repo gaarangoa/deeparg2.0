@@ -33,7 +33,7 @@ def train(inputdir, outdir, epoch, ptrain, batch):
         labels_file=inputdir+'/input.kmers.tsv.headers'
     )
 
-    train_dataset_wordvectors, train_dataset_sequences = obtain_dataset_wordvectors(
+    train_dataset_wordvectors, train_dataset_numerical = obtain_dataset_wordvectors(
         dataset_file=inputdir+'/input.kmers.tsv.sentences.wv',
         labels_file=inputdir+'/input.kmers.tsv.headers'
     )
@@ -44,11 +44,9 @@ def train(inputdir, outdir, epoch, ptrain, batch):
         [ix for ix, i in enumerate(train_dataset_wordvectors)]
     )
 
-    print(train_dataset_sequences.shape[0])
-
     deeparg = DeepARG(
         input_dataset_wordvectors_size=train_dataset_wordvectors.shape[1],
-        input_convolutional_dataset_size=train_dataset_sequences.shape[1],
+        input_convolutional_dataset_size=1500,
         classes_labels=train_class_labels,
         group_labels=train_group_labels,
         classes=classes,
@@ -74,6 +72,7 @@ def train(inputdir, outdir, epoch, ptrain, batch):
     model.fit(
         {
             'wordvectors_input': train_dataset_wordvectors,
+            'convolutional_input': train_dataset_numerical
         },
         {
             'arg_class_output': train_class_labels,
