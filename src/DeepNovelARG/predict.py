@@ -105,11 +105,11 @@ def predict(inputfile, modeldir, outdir, kmer, minp):
     for _ix in tqdm(range(len(ynew[1]))):
         y_pred = ynew[1][_ix]
         query = file_order[_ix]
-        predictions = np.where(y_pred >= minp)
+        predictions = np.where(y_pred >= minp)[0]
 
         for ix in predictions:
             fo.write("\t".join([
                 query,
-                str(round(y_pred[ix[0]], 2)),
-                metadata['reverse_groups_dict'][str(ix[0])]
+                str(round(y_pred[ix, 2)),
+                metadata['reverse_groups_dict'][str(ix)]
             ])+"\n")
