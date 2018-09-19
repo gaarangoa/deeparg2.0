@@ -56,7 +56,7 @@ def predict(inputfile, modeldir, outdir, kmer, minp):
 
     # load dataset
     log.info('Loading dataset for classification')
-    dataset_wordvectors, , dataset_numerical = obtain_dataset_wordvectors(
+    dataset_wordvectors, dataset_numerical = obtain_dataset_wordvectors(
         dataset_file=outdir+'/input.kmers.tsv.sentences.wv',
         labels_file=outdir+'/input.kmers.tsv.headers',
     )
