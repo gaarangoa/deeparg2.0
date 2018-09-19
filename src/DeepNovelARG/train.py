@@ -35,9 +35,9 @@ def train(inputdir, outdir, epoch, ptrain, batch):
 
     # what device is using?
     if tfe.num_gpus() <= 0:
-        log.info("Using CPU")
+        log.info("Using CPU: training may take a while!")
     else:
-        log.info("Using GPU")
+        log.info("Using GPU: training may take a while")
 
     # tensorboard
     log.info("starting TensorBoard")
