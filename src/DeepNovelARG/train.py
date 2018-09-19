@@ -55,16 +55,16 @@ def train(inputdir, outdir, epoch, batch):
     tensorboard = TensorBoard(log_dir=outdir+"/logs/{}".format(time()))
 
     # load training dataset wordvectors
-    log.info('loading labels')
+    log.info('loading training labels')
     classes, groups, index, train_group_labels, train_class_labels = obtain_labels(
         labels_file=inputdir+'/train.input.kmers.tsv.headers'
     )
 
-    log.info("adding labels to test dataset")
+    log.info("adding testing labels")
     test_group_labels, test_class_labels = obtain_test_labels(
         classes=classes,
         groups=groups,
-        labels_file=inputdir+'/train.input.kmers.tsv.headers'
+        labels_file=inputdir+'/test.input.kmers.tsv.headers'
     )
 
     log.info("Loading training dataset: wordvectors and numerical signals")
