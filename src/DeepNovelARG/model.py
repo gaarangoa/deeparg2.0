@@ -3,12 +3,12 @@ from tensorflow import keras
 
 
 class DeepARG():
-    def __init__(self, input_dataset_wordvectors_size=0, input_convolutional_dataset_size=2000, classes_labels=[], group_labels=[], classes=[], groups=[]):
+    def __init__(self, input_dataset_wordvectors_size=0, input_convolutional_dataset_size=2000, num_classes=[], num_groups=[]):
         # setup parameters for model
         self.input_dataset_wordvectors_size = input_dataset_wordvectors_size
         self.input_convolutional_dataset_size = input_convolutional_dataset_size
-        self.total_arg_classes = len(classes)
-        self.total_arg_groups = len(groups)
+        self.total_arg_classes = num_classes
+        self.total_arg_groups = num_groups
 
     def model(self):
 

@@ -17,9 +17,16 @@ import sys
 @click.option('--inputdir', required=True, help='input directory with the output from fasta2vec')
 @click.option('--outdir', default='', required=True, help='output directory where to store the model')
 @click.option('--epoch', default=10, required=False, help='number of epochs to run the model [default 10]')
-@click.option('--ptrain', default=0.3, required=False, help='fraction of the dataset used for training [default 0.3]')
 @click.option('--batch', default=32, required=False, help='batch size for using during training [default 32]')
-def train(inputdir, outdir, epoch, ptrain, batch):
+def train(inputdir, outdir, epoch, batch):
+    '''
+        Train a the deepARG+ architecture (convolutional network + word vectors deep network) for the prediciton
+        of categories (antibiotics) and groups (gene names).
+
+        Although, the topology was tested for ARGs, it can be used for any dataset. For details,
+        please take a look at: git
+
+    '''
 
     log_file = logging.FileHandler(filename=outdir + '/train.log',)
     log_stdout = logging.StreamHandler(sys.stdout)
@@ -66,7 +73,7 @@ def train(inputdir, outdir, epoch, ptrain, batch):
     reverse_groups_dict = {int(groups[i]): i for i in groups}
 
     log.info("Loading testing dataset: ")
-    train_dataset_wordvectors, train_dataset_numerical = obtain_dataset_wordvectors(
+    test_dataset_wordvectors, test_dataset_numerical = obtain_dataset_wordvectors(
         dataset_file=inputdir+'/test.input.kmers.tsv.sentences.wv',
         labels_file=inputdir+'/test.input.kmers.tsv.headers'
     )
@@ -75,10 +82,8 @@ def train(inputdir, outdir, epoch, ptrain, batch):
     deeparg = DeepARG(
         input_dataset_wordvectors_size=train_dataset_wordvectors.shape[1],
         input_convolutional_dataset_size=1500,
-        classes_labels=train_class_labels,
-        group_labels=train_group_labels,
-        classes=classes,
-        groups=groups
+        num_classes=len(classes),
+        num_groups=len(groups)
     )
 
     model = deeparg.model()
@@ -110,7 +115,16 @@ def train(inputdir, outdir, epoch, ptrain, batch):
         },
         epochs=epoch,
         batch_size=batch,
-        validation_split=ptrain,
+        validation_data=(
+            {
+                'wordvectors_input': test_dataset_wordvectors,
+                'convolutional_input': test_dataset_numerical
+            },
+            {
+                'arg_class_output': test_class_labels,
+                'arg_group_output': test_group_labels
+            }
+        ),
         callbacks=[tensorboard],
         shuffle=True
     )
