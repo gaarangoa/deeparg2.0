@@ -110,6 +110,6 @@ def predict(inputfile, modeldir, outdir, kmer, minp):
         for ix in predictions:
             fo.write("\t".join([
                 query,
-                str(y_pred[ix]),
-                metadata['reverse_groups_dict'][str(ix)]
+                str(round(y_pred[ix[0]], 2)),
+                metadata['reverse_groups_dict'][str(ix[0])]
             ])+"\n")
