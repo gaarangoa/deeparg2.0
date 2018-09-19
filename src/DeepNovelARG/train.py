@@ -46,13 +46,13 @@ def train(inputdir, outdir, epoch, ptrain, batch):
     # load training dataset wordvectors
     log.info('loading labels')
     classes, groups, index, train_group_labels, train_class_labels = obtain_labels(
-        labels_file=inputdir+'/input.kmers.tsv.headers'
+        labels_file=inputdir+'/train.input.kmers.tsv.headers'
     )
 
     log.info("Loading training dataset: wordvectors and numerical signals")
     train_dataset_wordvectors, train_dataset_numerical = obtain_dataset_wordvectors(
-        dataset_file=inputdir+'/input.kmers.tsv.sentences.wv',
-        labels_file=inputdir+'/input.kmers.tsv.headers'
+        dataset_file=inputdir+'/train.input.kmers.tsv.sentences.wv',
+        labels_file=inputdir+'/train.input.kmers.tsv.headers'
     )
 
     reverse_classes_dict = {int(classes[i]): i for i in classes}

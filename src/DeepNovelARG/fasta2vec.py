@@ -13,7 +13,8 @@ import logging
 @click.option('--modeldir', default='', required=True, help='directory where the word2vec model was downloaded')
 @click.option('--outdir', default='', required=True, help='output directory where to store the results')
 @click.option('--kmer', default=11, help='kmer length [default: 11]')
-def fasta2vec(inputfile, modeldir, outdir, kmer):
+@click.option('--prefix', default='', help='prefix to add to output files [train, test]')
+def fasta2vec(inputfile, modeldir, outdir, kmer, prefix):
     """
 
     Input a fasta file and builds the wordvector files
@@ -42,9 +43,9 @@ def fasta2vec(inputfile, modeldir, outdir, kmer):
     log.info('Get sentence vectors using fasttext: Initiated')
     os.system(
         'fasttext print-sentence-vectors ' +
-        modeldir + '/model.bin < ' +
-        outdir + '/input.kmers.tsv.sentences > ' +
-        outdir + '/input.kmers.tsv.sentences.wv '
+        modeldir + '/' + prefix + 'model.bin < ' +
+        outdir + '/' + prefix + 'input.kmers.tsv.sentences > ' +
+        outdir + '/' + prefix + 'input.kmers.tsv.sentences.wv '
     )
     log.info('Get sentence vectors using fasttext: Finished')
 
