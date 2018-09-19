@@ -75,6 +75,40 @@ def obtain_dataset_alignments(dataset_file='', features_file='', file_order=''):
     return [scaler.fit_transform(np.array(ordered_dataset)), features]
 
 
+def obtain_test_labels(classes={}, groups={}, labels_file=''):
+    '''[
+        This script subtract the test labes by using the keywords
+        (classes/groups) from the training.
+    ]
+
+    Keyword Arguments:
+        classes {[list]} -- [object with classes names] (default: {[]})
+        groups {[list]} -- [object with group names] (default: {[]})
+        labels_file {str} -- [file with information] (default: {''})
+    '''
+
+    total_categories = len(classes)
+    total_groups = len(groups)
+    group_labels = []
+    category_labels = []
+
+    for i in open(labels_file):
+        i = i.strip().split('\t')
+        #
+        arg_id, arg_classes, arg_name, arg_group = i[0].split("|")
+        #
+        category_label = np.zeros(total_categories)
+        group_label = np.zeros(total_groups)
+        for arg_class in arg_classes.split(":"):
+            category_label[classes[arg_class]] = 1
+        #
+        group_label[groups[arg_group]] = 1
+        group_labels.append(group_label)
+        category_labels.append(category_label)
+
+    return np.array(group_labels), np.array(category_labels)
+
+
 def obtain_labels(labels_file=''):
     '''
 

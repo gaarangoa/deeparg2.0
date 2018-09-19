@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.callbacks import TensorBoard
 from time import time
-from DeepNovelARG.dataset import obtain_labels, obtain_dataset_wordvectors, obtain_dataset_alignments
+from DeepNovelARG.dataset import obtain_labels, obtain_dataset_wordvectors, obtain_dataset_alignments, obtain_test_labels
 from DeepNovelARG.model import DeepARG
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -49,6 +49,13 @@ def train(inputdir, outdir, epoch, ptrain, batch):
         labels_file=inputdir+'/train.input.kmers.tsv.headers'
     )
 
+    log.info("adding labels to test dataset")
+    test_group_labels, test_class_labels = obtain_test_labels(
+        classes=classes,
+        groups=groups,
+        labels_file=inputdir+'/train.input.kmers.tsv.headers'
+    )
+
     log.info("Loading training dataset: wordvectors and numerical signals")
     train_dataset_wordvectors, train_dataset_numerical = obtain_dataset_wordvectors(
         dataset_file=inputdir+'/train.input.kmers.tsv.sentences.wv',
@@ -57,6 +64,12 @@ def train(inputdir, outdir, epoch, ptrain, batch):
 
     reverse_classes_dict = {int(classes[i]): i for i in classes}
     reverse_groups_dict = {int(groups[i]): i for i in groups}
+
+    log.info("Loading testing dataset: ")
+    train_dataset_wordvectors, train_dataset_numerical = obtain_dataset_wordvectors(
+        dataset_file=inputdir+'/test.input.kmers.tsv.sentences.wv',
+        labels_file=inputdir+'/test.input.kmers.tsv.headers'
+    )
 
     log.info('loading deep learning model')
     deeparg = DeepARG(

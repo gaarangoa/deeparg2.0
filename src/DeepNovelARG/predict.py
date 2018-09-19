@@ -4,6 +4,7 @@ import json
 import click
 from DeepNovelARG.fasta2kmers import fasta2kmers
 import os
+import numpy as np
 from tqdm import tqdm
 import logging
 import sys
@@ -104,11 +105,11 @@ def predict(inputfile, modeldir, outdir, kmer, minp):
     for _ix in tqdm(range(len(ynew[1]))):
         y_pred = ynew[1][_ix]
         query = file_order[_ix]
-        for ix, i in enumerate(y_pred):
-            if round(i, 2) <= minp:
-                continue
+        predictions = np.where(y_pred >= minp)
+
+        for ix in predictions:
             fo.write("\t".join([
                 query,
-                str(round(i, 2)),
+                str(round(y_pred[ix], 2)),
                 metadata['reverse_groups_dict'][str(ix)]
             ])+"\n")

@@ -6,6 +6,7 @@ from DeepNovelARG.fasta2kmers import fasta2kmers
 import os
 from tqdm import tqdm
 import logging
+import sys
 
 
 @click.command()
@@ -21,10 +22,16 @@ def fasta2vec(inputfile, modeldir, outdir, kmer, prefix):
 
     """
 
+    log_file = logging.FileHandler(
+        filename=outdir + '/' + prefix + '.fasta2vec.log'
+    )
+    log_stdout = logging.StreamHandler(sys.stdout)
+    handlers = [log_file, log_stdout]
+
     logging.basicConfig(
-        filename=outdir + '/log',
         level=logging.DEBUG,
-        format="%(levelname)s %(asctime)s - %(message)s"
+        format="%(levelname)s %(asctime)s - %(message)s",
+        handlers=handlers
     )
 
     log = logging.getLogger()
@@ -34,7 +41,7 @@ def fasta2vec(inputfile, modeldir, outdir, kmer, prefix):
     # produces: input.kmers.tsv.sentences
     #           input.kmers.tsv.headers
 
-    fasta2kmers(inputfile, kmer, outdir + '/input.kmers.tsv')
+    fasta2kmers(inputfile, kmer, outdir + '/' + prefix + '.input.kmers.tsv')
     log.info(" Convert input file into a kmer's sentence file: Finished")
 
     # Get sentence vectors using fasttext
@@ -43,10 +50,10 @@ def fasta2vec(inputfile, modeldir, outdir, kmer, prefix):
     log.info('Get sentence vectors using fasttext: Initiated')
     os.system(
         'fasttext print-sentence-vectors ' +
-        modeldir + '/' + prefix + 'model.bin < ' +
-        outdir + '/' + prefix + 'input.kmers.tsv.sentences > ' +
-        outdir + '/' + prefix + 'input.kmers.tsv.sentences.wv '
+        modeldir + '/model.bin < ' +
+        outdir + '/' + prefix + '.input.kmers.tsv.sentences > ' +
+        outdir + '/' + prefix + '.input.kmers.tsv.sentences.wv '
     )
     log.info('Get sentence vectors using fasttext: Finished')
 
-    # TODO postprocess sequences to get only vectors in HDF5 files
+    # TODO: postprocess sequences to get only vectors in HDF5 files
