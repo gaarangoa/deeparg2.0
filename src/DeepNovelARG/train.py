@@ -11,6 +11,7 @@ import click
 import tensorflow.contrib.eager as tfe
 import logging
 import sys
+import os
 
 
 @click.command()
@@ -27,6 +28,9 @@ def train(inputdir, outdir, epoch, batch):
         please take a look at: git
 
     '''
+
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
 
     log_file = logging.FileHandler(filename=outdir + '/train.log',)
     log_stdout = logging.StreamHandler(sys.stdout)
@@ -89,6 +93,7 @@ def train(inputdir, outdir, epoch, batch):
     model = deeparg.model()
 
     log.info('compiling deep learning model deepARG+')
+
     model.compile(
         optimizer='adam',
         loss={
@@ -132,6 +137,8 @@ def train(inputdir, outdir, epoch, batch):
     log.info("Storing deepARG+ metadata")
     json.dump(
         {
+            'optimizer': 'adam',
+            'epochs': epoch,
             'classes_dict': classes,
             'groups_dict': groups,
             'reverse_classes_dict': reverse_classes_dict,
