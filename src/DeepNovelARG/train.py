@@ -19,7 +19,8 @@ import os
 @click.option('--outdir', default='', required=True, help='output directory where to store the model')
 @click.option('--epoch', default=10, required=False, help='number of epochs to run the model [default 10]')
 @click.option('--batch', default=32, required=False, help='batch size for using during training [default 32]')
-def train(inputdir, outdir, epoch, batch):
+@click.option('--maxlen-conv', default=1500, required=False, help='max sequence length to consider for convolutional network [default 1500]')
+def train(inputdir, outdir, epoch, batch, maxlen_conv):
     '''
         Train a the deepARG+ architecture (convolutional network + word vectors deep network) for the prediciton
         of categories (antibiotics) and groups (gene names).
@@ -70,7 +71,8 @@ def train(inputdir, outdir, epoch, batch):
     log.info("Loading training dataset: wordvectors and numerical signals")
     train_dataset_wordvectors, train_dataset_numerical = obtain_dataset_wordvectors(
         dataset_file=inputdir+'/train.input.kmers.tsv.sentences.wv',
-        labels_file=inputdir+'/train.input.kmers.tsv.headers'
+        labels_file=inputdir + '/train.input.kmers.tsv.headers',
+        maxlen=maxlen_conv
     )
 
     reverse_classes_dict = {int(classes[i]): i for i in classes}
@@ -79,13 +81,14 @@ def train(inputdir, outdir, epoch, batch):
     log.info("Loading testing dataset: ")
     test_dataset_wordvectors, test_dataset_numerical = obtain_dataset_wordvectors(
         dataset_file=inputdir+'/test.input.kmers.tsv.sentences.wv',
-        labels_file=inputdir+'/test.input.kmers.tsv.headers'
+        labels_file=inputdir + '/test.input.kmers.tsv.headers',
+        maxlen=maxlen_conv
     )
 
     log.info('loading deep learning model')
     deeparg = DeepARG(
         input_dataset_wordvectors_size=train_dataset_wordvectors.shape[1],
-        input_convolutional_dataset_size=1500,
+        input_convolutional_dataset_size=maxlen_conv,
         num_classes=len(classes),
         num_groups=len(groups)
     )

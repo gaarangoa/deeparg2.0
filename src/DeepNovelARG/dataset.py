@@ -15,11 +15,11 @@ def aa2int(i):
         return IUPAC_CODES['*']
 
 
-def obtain_dataset_wordvectors(dataset_file='', labels_file=''):
+def obtain_dataset_wordvectors(dataset_file='', labels_file='', maxlen=1500):
     dataset = []
     sequences = []
     index = [int(i.strip().split('\t')[1]) for i in open(labels_file)]
-    print('parsing input dataset to get wordvectors and numerical signals')
+
     for ix, i in tqdm(enumerate(open(dataset_file))):
         i = i.split()
         item = np.array([float(k) for k in i[index[ix]:]])
@@ -28,7 +28,7 @@ def obtain_dataset_wordvectors(dataset_file='', labels_file=''):
         sequences.append(item2)
     sequences = pad_sequences(
         sequences,
-        maxlen=1500,
+        maxlen=maxlen,
         padding='post',
         dtype='float32',
         truncating='post'
