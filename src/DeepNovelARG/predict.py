@@ -56,7 +56,7 @@ def predict(inputfile, modeldir, outdir, kmer, minp):
 
     # load dataset
     log.info('Loading dataset for classification')
-    dataset_wordvectors = obtain_dataset_wordvectors(
+    dataset_wordvectors, , dataset_numerical = obtain_dataset_wordvectors(
         dataset_file=outdir+'/input.kmers.tsv.sentences.wv',
         labels_file=outdir+'/input.kmers.tsv.headers',
     )
@@ -67,6 +67,7 @@ def predict(inputfile, modeldir, outdir, kmer, minp):
     ynew = model.predict(
         {
             'wordvectors_input': dataset_wordvectors,
+            'convolutional_input': dataset_numerical
         },
     )
 

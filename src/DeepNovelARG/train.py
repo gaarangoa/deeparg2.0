@@ -40,9 +40,6 @@ def train(inputdir, outdir, epoch, ptrain, batch):
 
     reverse_classes_dict = {int(classes[i]): i for i in classes}
     reverse_groups_dict = {int(groups[i]): i for i in groups}
-    dataset_index = np.array(
-        [ix for ix, i in enumerate(train_dataset_wordvectors)]
-    )
 
     deeparg = DeepARG(
         input_dataset_wordvectors_size=train_dataset_wordvectors.shape[1],
