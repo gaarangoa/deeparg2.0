@@ -88,7 +88,7 @@ def predict(inputfile, modeldir, outdir, kmer, minp):
     fo = open(outdir + '/predicted.classes.txt', 'w')
     fo.write("#Query\tProbability\tPrediction\n")
     for _ix in tqdm(range(len(ynew[0]))):
-        y_pred = ynew[1][_ix]
+        y_pred = ynew[0][_ix]
         query = file_order[_ix]
         predictions = np.where(y_pred >= minp)[0]
 
