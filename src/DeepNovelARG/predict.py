@@ -88,16 +88,16 @@ def predict(inputfile, modeldir, outdir, kmer, minp):
     fo = open(outdir + '/predicted.classes.txt', 'w')
     fo.write("#Query\tProbability\tPrediction\n")
     for _ix in tqdm(range(len(ynew[0]))):
-        y_pred = ynew[0][_ix]
+        y_pred = ynew[1][_ix]
         query = file_order[_ix]
-        for ix, i in enumerate(y_pred):
-            if round(i, 2) <= minp:
-                continue
+        predictions = np.where(y_pred >= minp)[0]
+
+        for ix in predictions:
             fo.write("\t".join([
                 query,
-                str(round(i, 2)),
+                str(round(y_pred[ix], 2)),
                 metadata['reverse_classes_dict'][str(ix)]
-            ]) + "\n")
+            ])+"\n")
 
     log.info("Write results for groups/genes annotation")
     fo = open(outdir + '/predicted.groups.txt', 'w')
