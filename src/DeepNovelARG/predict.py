@@ -12,11 +12,13 @@ import sys
 
 @click.command()
 @click.option('--inputfile', required=True, help='input fasta file')
-@click.option('--modeldir', default='', required=True, help='directory where the model was downloaded')
+@click.option('--wordvec-model', default='', required=True, help='word vector model [model.bin]')
+@click.option('--deepARG-model', default='', required=True, help='deepARG model to load [deepARG.model.h5]')
+@click.option('--deepARG-parameters', default='', required=True, help='internal parameters of deepARG model [deepARG.parameters.json]')
 @click.option('--outdir', default='', required=True, help='output directory where to store the results')
 @click.option('--minp', default=0.1, help='minimum probability [default: 0.1]')
 @click.option('--kmer', default=11, help='kmer length [default: 11]')
-def predict(inputfile, modeldir, outdir, kmer, minp):
+def predict(inputfile, wordvec_model, deepARG_model, deepARG_parameters, outdir, kmer, minp):
     """
 
     Input a fasta file and predict the ARG-like sequences.
@@ -49,7 +51,7 @@ def predict(inputfile, modeldir, outdir, kmer, minp):
     log.info('Get sentence vectors using fasttext: Initiated')
     os.system(
         'fasttext print-sentence-vectors ' +
-        modeldir + '/model.bin < ' +
+        wordvec_model + ' < ' +
         outdir + '/input.kmers.tsv.sentences > ' +
         outdir + '/input.kmers.tsv.sentences.wv '
     )
@@ -64,7 +66,7 @@ def predict(inputfile, modeldir, outdir, kmer, minp):
 
     # load deep learning model
     log.info('Loading Deep Neural Network model')
-    model = keras.models.load_model(modeldir+'/deeparg2.h5')
+    model = keras.models.load_model(deepARG_model)
     ynew = model.predict(
         {
             'wordvectors_input': dataset_wordvectors,
@@ -74,7 +76,7 @@ def predict(inputfile, modeldir, outdir, kmer, minp):
 
     log.info("Loading Neural Network metadata")
     # load metadata from the trained model
-    metadata = json.load(open(modeldir+'/deeparg2.parameters.json'))
+    metadata = json.load(open(deepARG_parameters))
 
     # load file that contains the order in which the sequences are processed
     log.info(

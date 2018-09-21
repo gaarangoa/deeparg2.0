@@ -58,7 +58,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
     tensorboard = TensorBoard(log_dir=outdir+f'/logs/{name}')
 
     # Model Checkpoint
-    ckpt_file = 'model.{epoch:03d}.hdf5'
+    ckpt_file = outdir + '/model.{epoch:03d}.hdf5'
     checkpoint = keras.callbacks.ModelCheckpoint(ckpt_file, verbose=1, save_best_only=False, save_weights_only=False, mode='auto', period=1)
 
 
@@ -117,6 +117,19 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
         metrics=['accuracy']
     )
 
+    log.info("Storing deepARG+ metadata")
+    json.dump(
+        {
+            'optimizer': 'adam',
+            'epochs': epoch,
+            'classes_dict': classes,
+            'groups_dict': groups,
+            'reverse_classes_dict': reverse_classes_dict,
+            'reverse_groups_dict': reverse_groups_dict
+        },
+        open(outdir+'/deepARG.parameters.json', 'w')
+    )
+
     log.info("Training deepARG+")
     # And trained it via:
     model.fit(
@@ -143,19 +156,3 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
         callbacks=[tensorboard, checkpoint],
         shuffle=True
     )
-
-    log.info("Storing deepARG+ metadata")
-    json.dump(
-        {
-            'optimizer': 'adam',
-            'epochs': epoch,
-            'classes_dict': classes,
-            'groups_dict': groups,
-            'reverse_classes_dict': reverse_classes_dict,
-            'reverse_groups_dict': reverse_groups_dict
-        },
-        open(outdir+'/deeparg2.parameters.json', 'w')
-    )
-
-    # log.info("Storing trained model after "+str(epoch)+" epochs.")
-    # model.save(outdir+'/deeparg2.h5')
