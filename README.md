@@ -3,8 +3,7 @@ This repository contains the update of deepARG (deep learning based approach for
 
 ## Requierements
 
-[![CircleCI](https://img.shields.io/circleci/project/github/ntkme/github-buttons.svg)](https://circleci.com/gh/ntkme/github-buttons)
-[![Codecov](https://img.shields.io/codecov/c/github/ntkme/github-buttons.svg)](https://codecov.io/gh/ntkme/github-buttons)
+* Python3.6
 
 ### Install fasttext
 
