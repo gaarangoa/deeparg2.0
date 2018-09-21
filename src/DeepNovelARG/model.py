@@ -123,7 +123,7 @@ class DeepARG():
         arg_groups_hidden_input = keras.layers.Dense(
             300,
             activation='relu'
-        )(latent)
+        )(wv_nn)
         arg_groups_output = keras.layers.Dense(
             self.total_arg_groups,
             activation="sigmoid",
