@@ -86,7 +86,7 @@ def predict(inputfile, wordvec_model, deeparg_model, deeparg_parameters, outdir,
     log.info(
         "Loading file *.headers that contains the order in which each entry apears")
     file_order = [
-        i.strip().split("\t")[0] for i in open(outdir+'/input.kmers.tsv.headers')
+        i.strip().split("\t")[0] for i in open(outdir+f'/{prefix}.input.kmers.tsv.headers')
     ]
 
     # write output files
