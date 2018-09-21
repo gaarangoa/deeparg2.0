@@ -127,7 +127,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
             'reverse_classes_dict': reverse_classes_dict,
             'reverse_groups_dict': reverse_groups_dict
         },
-        open(outdir+f'/deepARG.{prefix}.parameters.json', 'w')
+        open(outdir+f'/{prefix}.parameters.json', 'w')
     )
 
     log.info("Training deepARG+")
