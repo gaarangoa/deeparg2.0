@@ -58,7 +58,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
     tensorboard = TensorBoard(log_dir=outdir+f'/logs/{name}')
 
     # Model Checkpoint
-    ckpt_file = f'model.{epoch:02d}-{val_loss:.2f}.hdf5'
+    ckpt_file = 'model.{epoch:02d}-{val_loss:.2f}.hdf5'
     checkpoint = keras.callbacks.ModelCheckpoint(ckpt_file, monitor='val_loss', verbose=1, save_best_only=False, save_weights_only=False, mode='auto', period=1)
 
 

@@ -7,6 +7,7 @@ setup(
     include_package_data=False,
     install_requires=[
         'Click',
+        'scipy',
         'BioPython',
         'ete3',
         'h5py',
