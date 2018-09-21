@@ -38,13 +38,13 @@ def predict(inputfile, wordvec_model, deeparg_model, deeparg_parameters, outdir,
 
     log = logging.getLogger()
 
-    log.info(" Convert input file into a kmer's sentence file: Initiated")
+    log.info("Convert input file into a kmer's sentence file: Initiated")
     # Convert fasta file to kmer's sentence file
     # produces: input.kmers.tsv.sentences
     #           input.kmers.tsv.headers
 
     fasta2kmers(inputfile, kmer, outdir + f'/{prefix}.input.kmers.tsv')
-    log.info(" Convert input file into a kmer's sentence file: Finished")
+    log.info("Convert input file into a kmer's sentence file: Finished")
 
     # Get sentence vectors using fasttext
     # produces: input.kmers.tsv.sentences.wv
