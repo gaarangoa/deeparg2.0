@@ -18,14 +18,15 @@ import sys
 @click.option('--outdir', default='', required=True, help='output directory where to store the results')
 @click.option('--minp', default=0.1, help='minimum probability [default: 0.1]')
 @click.option('--kmer', default=11, help='kmer length [default: 11]')
-def predict(inputfile, wordvec_model, deeparg_model, deeparg_parameters, outdir, kmer, minp):
+@click.option('--prefix', default="result", help='prefix to output file [default: result ]')
+def predict(inputfile, wordvec_model, deeparg_model, deeparg_parameters, outdir, kmer, minp, prefix):
     """
 
     Input a fasta file and predict the ARG-like sequences.
 
     """
 
-    log_file = logging.FileHandler(filename=outdir + '/log',)
+    log_file = logging.FileHandler(filename=outdir + f'/{prefix}.log',)
     log_stdout = logging.StreamHandler(sys.stdout)
     handlers = [log_file, log_stdout]
 
@@ -42,7 +43,7 @@ def predict(inputfile, wordvec_model, deeparg_model, deeparg_parameters, outdir,
     # produces: input.kmers.tsv.sentences
     #           input.kmers.tsv.headers
 
-    fasta2kmers(inputfile, kmer, outdir + '/input.kmers.tsv')
+    fasta2kmers(inputfile, kmer, outdir + f'/{prefix}.input.kmers.tsv')
     log.info(" Convert input file into a kmer's sentence file: Finished")
 
     # Get sentence vectors using fasttext
@@ -52,16 +53,16 @@ def predict(inputfile, wordvec_model, deeparg_model, deeparg_parameters, outdir,
     os.system(
         'fasttext print-sentence-vectors ' +
         wordvec_model + ' < ' +
-        outdir + '/input.kmers.tsv.sentences > ' +
-        outdir + '/input.kmers.tsv.sentences.wv '
+        outdir + f'/{prefix}.input.kmers.tsv.sentences > ' +
+        outdir + f'/{prefix}.input.kmers.tsv.sentences.wv '
     )
     log.info('Get sentence vectors using fasttext: Finished')
 
     # load dataset
     log.info('Loading dataset for classification')
     dataset_wordvectors, dataset_numerical = obtain_dataset_wordvectors(
-        dataset_file=outdir+'/input.kmers.tsv.sentences.wv',
-        labels_file=outdir+'/input.kmers.tsv.headers',
+        dataset_file=outdir+f'/{prefix}.input.kmers.tsv.sentences.wv',
+        labels_file=outdir+'/{prefix}.input.kmers.tsv.headers',
     )
 
     # load deep learning model
@@ -87,7 +88,7 @@ def predict(inputfile, wordvec_model, deeparg_model, deeparg_parameters, outdir,
 
     # write output files
     log.info("Write results for classes annotation")
-    fo = open(outdir + '/predicted.classes.txt', 'w')
+    fo = open(outdir + f'/{prefix}.predicted.classes.txt', 'w')
     fo.write("#Query\tProbability\tPrediction\n")
     for _ix in tqdm(range(len(ynew[0]))):
         y_pred = ynew[0][_ix]
@@ -102,7 +103,7 @@ def predict(inputfile, wordvec_model, deeparg_model, deeparg_parameters, outdir,
             ])+"\n")
 
     log.info("Write results for groups/genes annotation")
-    fo = open(outdir + '/predicted.groups.txt', 'w')
+    fo = open(outdir + f'/{prefix}.predicted.groups.txt', 'w')
     fo.write("#Query\tProbability\tPrediction\n")
     for _ix in tqdm(range(len(ynew[1]))):
         y_pred = ynew[1][_ix]
