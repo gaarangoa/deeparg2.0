@@ -68,11 +68,14 @@ def predict(inputfile, wordvec_model, deeparg_model, deeparg_parameters, outdir,
     # load deep learning model
     log.info('Loading Deep Neural Network model')
     model = keras.models.load_model(deeparg_model)
+    log.info('Predicting queries ...')
+
     ynew = model.predict(
         {
             'wordvectors_input': dataset_wordvectors,
             'convolutional_input': dataset_numerical
         },
+        verbose=1
     )
 
     log.info("Loading Neural Network metadata")
