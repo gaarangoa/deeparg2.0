@@ -57,6 +57,11 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
     log.info("starting TensorBoard")
     tensorboard = TensorBoard(log_dir=outdir+f'/logs/{name}')
 
+    # Model Checkpoint
+    ckpt_file = f'model.{epoch:02d}-{val_loss:.2f}.hdf5'
+    checkpoint = keras.callbacks.ModelCheckpoint(ckpt_file, monitor='val_loss', verbose=1, save_best_only=False, save_weights_only=False, mode='auto', period=1)
+
+
     # load training dataset wordvectors
     log.info('loading training labels')
     classes, groups, index, train_group_labels, train_class_labels = obtain_labels(
@@ -135,7 +140,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
                 'arg_group_output': test_group_labels
             }
         ),
-        callbacks=[tensorboard],
+        callbacks=[tensorboard, checkpoint],
         shuffle=True
     )
 
@@ -152,5 +157,5 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
         open(outdir+'/deeparg2.parameters.json', 'w')
     )
 
-    log.info("Storing trained model after "+str(epoch)+" epochs.")
-    model.save(outdir+'/deeparg2.h5')
+    # log.info("Storing trained model after "+str(epoch)+" epochs.")
+    # model.save(outdir+'/deeparg2.h5')
