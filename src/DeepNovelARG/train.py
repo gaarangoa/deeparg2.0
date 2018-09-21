@@ -21,7 +21,7 @@ import os
 @click.option('--batch', default=32, required=False, help='batch size for using during training [default 32]')
 @click.option('--maxlen-conv', default=1500, required=False, help='max sequence length to consider for convolutional network [default 1500]')
 @click.option('--prefix', default="", required=False, help='prefix used during training for tensorboard. Useful for keeping track of different sessions')
-def train(inputdir, outdir, epoch, batch, maxlen_conv):
+def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
     '''
         Train a the deepARG+ architecture (convolutional network + word vectors deep network) for the prediciton
         of categories (antibiotics) and groups (gene names).
@@ -53,7 +53,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv):
         log.info("Using GPU: training may take a while")
 
     # tensorboard
-    name = f'deepARG+_{time()}'
+    name = f'deepARG+_{prefix}_{time()}'
     log.info("starting TensorBoard")
     tensorboard = TensorBoard(log_dir=outdir+f'/logs/{name}')
 
