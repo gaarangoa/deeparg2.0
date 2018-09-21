@@ -58,8 +58,8 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
     tensorboard = TensorBoard(log_dir=outdir+f'/logs/{name}')
 
     # Model Checkpoint
-    ckpt_file = 'model.{epoch:02d}-{val_loss:.2f}.hdf5'
-    checkpoint = keras.callbacks.ModelCheckpoint(ckpt_file, monitor='val_loss', verbose=1, save_best_only=False, save_weights_only=False, mode='auto', period=1)
+    ckpt_file = 'model.{epoch:03d}.hdf5'
+    checkpoint = keras.callbacks.ModelCheckpoint(ckpt_file, verbose=1, save_best_only=False, save_weights_only=False, mode='auto', period=1)
 
 
     # load training dataset wordvectors
