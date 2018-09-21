@@ -20,7 +20,7 @@ import os
 @click.option('--epoch', default=10, required=False, help='number of epochs to run the model [default 10]')
 @click.option('--batch', default=32, required=False, help='batch size for using during training [default 32]')
 @click.option('--maxlen-conv', default=1500, required=False, help='max sequence length to consider for convolutional network [default 1500]')
-@click.option('--prefix', default="default", required=False, help='prefix used during training for tensorboard. Useful for keeping track of different sessions')
+@click.option('--prefix', default="model", required=False, help='prefix used during training for tensorboard. Useful for keeping track of different sessions')
 def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
     '''
         Train a the deepARG+ architecture (convolutional network + word vectors deep network) for the prediciton
@@ -58,7 +58,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
     tensorboard = TensorBoard(log_dir=outdir+f'/logs/{name}')
 
     # Model Checkpoint
-    ckpt_file = outdir + '/model.{prefix}.{epoch:03d}.hdf5'
+    ckpt_file = outdir + f'/{prefix}'+'.{epoch:03d}.hdf5'
     checkpoint = keras.callbacks.ModelCheckpoint(ckpt_file, verbose=1, save_best_only=False, save_weights_only=False, mode='auto', period=1)
 
 
