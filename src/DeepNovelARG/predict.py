@@ -62,7 +62,7 @@ def predict(inputfile, wordvec_model, deeparg_model, deeparg_parameters, outdir,
     log.info('Loading dataset for classification')
     dataset_wordvectors, dataset_numerical = obtain_dataset_wordvectors(
         dataset_file=outdir+f'/{prefix}.input.kmers.tsv.sentences.wv',
-        labels_file=outdir+'/{prefix}.input.kmers.tsv.headers',
+        labels_file=outdir+f'/{prefix}.input.kmers.tsv.headers',
     )
 
     # load deep learning model
