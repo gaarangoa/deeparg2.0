@@ -3,7 +3,7 @@ This repository contains the update of deepARG (deep learning based approach for
 
 ## Requierements
 
-* Python3.6
+* >Python3.6
 
 ### Install fasttext
 
