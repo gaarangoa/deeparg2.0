@@ -36,13 +36,13 @@ def fasta2vec(inputfile, wordvec_model, outdir, kmer, prefix):
 
     log = logging.getLogger()
 
-    log.info(" Convert input file into a kmer's sentence file: Initiated")
+    log.info("Convert input file into a kmer's sentence file: Initiated")
     # Convert fasta file to kmer's sentence file
     # produces: input.kmers.tsv.sentences
     #           input.kmers.tsv.headers
 
     fasta2kmers(inputfile, kmer, outdir + '/' + prefix + '.input.kmers.tsv')
-    log.info(" Convert input file into a kmer's sentence file: Finished")
+    log.info("Convert input file into a kmer's sentence file: Finished")
 
     # Get sentence vectors using fasttext
     # produces: input.kmers.tsv.sentences.wv
