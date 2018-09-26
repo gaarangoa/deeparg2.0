@@ -102,6 +102,6 @@ def train_word_vectors(inputfile, outdir, kmer, epoch, dim, ws, thread, mincount
         -epoch {epoch} \
         -thread {thread} \
         -minCount {mincount} '
-    log.info('FastText: {fasttext_cmd}')
+    log.info(fasttext_cmd)
     os.system(fasttext_cmd)
     log.info('The process is done :)')
