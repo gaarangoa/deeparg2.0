@@ -3,7 +3,7 @@ from Bio import SeqIO
 import numpy as np
 import os
 import h5py
-
+import sys
 from tqdm import tqdm
 import logging
 
