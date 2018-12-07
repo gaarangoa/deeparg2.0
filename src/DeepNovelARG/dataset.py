@@ -108,7 +108,7 @@ def obtain_test_labels(classes={}, groups={}, labels_file=''):
         try:
             assert(groups[arg_group])
         except Exception as e:
-            groups[arg_group] = max(list(arg_group.values()))+1
+            groups[arg_group] = max(list(groups.values()))+1
 
         group_label[groups[arg_group]] = 1
         group_labels.append(group_label)
