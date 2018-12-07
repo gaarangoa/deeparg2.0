@@ -59,8 +59,8 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
 
     # Model Checkpoint
     ckpt_file = outdir + f'/{prefix}'+'.{epoch:03d}.hdf5'
-    checkpoint = keras.callbacks.ModelCheckpoint(ckpt_file, verbose=1, save_best_only=False, save_weights_only=False, mode='auto', period=1)
-
+    checkpoint = keras.callbacks.ModelCheckpoint(
+        ckpt_file, verbose=1, save_best_only=False, save_weights_only=False, mode='auto', period=1)
 
     # load training dataset wordvectors
     log.info('loading training labels')
@@ -139,7 +139,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
         },
         {
             'arg_class_output': train_class_labels,
-            'arg_group_output': train_group_labels
+            # 'arg_group_output': train_group_labels
         },
         epochs=epoch,
         batch_size=batch,
@@ -150,7 +150,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
             },
             {
                 'arg_class_output': test_class_labels,
-                'arg_group_output': test_group_labels
+                # 'arg_group_output': test_group_labels
             }
         ),
         callbacks=[tensorboard, checkpoint],

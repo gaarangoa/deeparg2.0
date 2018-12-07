@@ -4,3 +4,6 @@ test
 logs
 model
 validation
+*.pyc
+**/*.pyc
+data
