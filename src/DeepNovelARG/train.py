@@ -65,7 +65,8 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
     # load training dataset wordvectors
     log.info('loading training labels')
     classes, groups, index, train_group_labels, train_class_labels = obtain_labels(
-        labels_file=inputdir+'/train.input.kmers.tsv.headers'
+        labels_file=inputdir + '/train.input.kmers.tsv.headers',
+        test_labes_file=inputdir+'/test.input.kmers.tsv.headers'
     )
 
     log.info("adding testing labels")

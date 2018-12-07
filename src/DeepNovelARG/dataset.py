@@ -105,11 +105,6 @@ def obtain_test_labels(classes={}, groups={}, labels_file=''):
         for arg_class in arg_classes.split(":"):
             category_label[classes[arg_class]] = 1
         #
-        try:
-            assert(groups[arg_group])
-        except Exception as e:
-            groups[arg_group] = max(list(groups.values()))+1
-
         group_label[groups[arg_group]] = 1
         group_labels.append(group_label)
         category_labels.append(category_label)
@@ -117,7 +112,7 @@ def obtain_test_labels(classes={}, groups={}, labels_file=''):
     return np.array(group_labels), np.array(category_labels)
 
 
-def obtain_labels(labels_file=''):
+def obtain_labels(labels_file='', test_labes_file=''):
     '''
 
     From the generated header files, subtract the labels for each ARG.
@@ -129,21 +124,26 @@ def obtain_labels(labels_file=''):
     category_index = 0
     group_index = 0
     index_start = []
-    for i in open(labels_file):
-        i = i.strip().split('\t')
-        index_start.append(int(i[1]))
-        arg_id, arg_classes, arg_name, arg_group = i[0].split("|")
-        for arg_class in arg_classes.split(":"):
+
+    # let's traverse both training and testing, in the case when the
+    # testing has labels that are not considered in the training we still
+    # need to add those to the labels
+    for _file in [labels_file, test_labes_file]:
+        for i in open(_file):
+            i = i.strip().split('\t')
+            index_start.append(int(i[1]))
+            arg_id, arg_classes, arg_name, arg_group = i[0].split("|")
+            for arg_class in arg_classes.split(":"):
+                try:
+                    assert(categories[arg_class])
+                except Exception as e:
+                    categories[arg_class] = category_index
+                    category_index += 1
             try:
-                assert(categories[arg_class])
+                assert(groups[arg_group])
             except Exception as e:
-                categories[arg_class] = category_index
-                category_index += 1
-        try:
-            assert(groups[arg_group])
-        except Exception as e:
-            groups[arg_group] = group_index
-            group_index += 1
+                groups[arg_group] = group_index
+                group_index += 1
 
     total_categories = len(categories)
     total_groups = len(groups)
