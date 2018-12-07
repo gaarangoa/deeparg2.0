@@ -149,7 +149,7 @@ class DeepARG():
             ],
             outputs=[
                 arg_class_output,
-                # arg_groups_output
+                arg_groups_output
             ]
         )
 

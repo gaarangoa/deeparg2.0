@@ -140,7 +140,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
         },
         {
             'arg_class_output': train_class_labels,
-            # 'arg_group_output': train_group_labels
+            'arg_group_output': train_group_labels
         },
         epochs=epoch,
         batch_size=batch,
@@ -151,7 +151,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
             },
             {
                 'arg_class_output': test_class_labels,
-                # 'arg_group_output': test_group_labels
+                'arg_group_output': test_group_labels
             }
         ),
         callbacks=[tensorboard, checkpoint],
