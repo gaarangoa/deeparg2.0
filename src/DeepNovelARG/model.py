@@ -126,7 +126,7 @@ class DeepARG():
         )(wv_nn)
         arg_groups_output = keras.layers.Dense(
             self.total_arg_groups,
-            activation="sigmoid",
+            activation="softmax",
             name="arg_group_output"
         )(arg_groups_hidden_input)
 
@@ -137,7 +137,7 @@ class DeepARG():
         )(latent)
         arg_class_output = keras.layers.Dense(
             self.total_arg_classes,
-            activation="sigmoid",
+            activation="softmax",
             name="arg_class_output"
         )(arg_class_hidden_input)
 

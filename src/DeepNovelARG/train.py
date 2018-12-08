@@ -108,8 +108,8 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
     model.compile(
         optimizer='adam',
         loss={
-            'arg_group_output': 'binary_crossentropy',
-            'arg_class_output': 'binary_crossentropy'
+            'arg_group_output': 'categorical_crossentropy',
+            'arg_class_output': 'categorical_crossentropy'
         },
         loss_weights={
             'arg_group_output': 1.0,
