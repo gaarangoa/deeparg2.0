@@ -52,9 +52,11 @@ def genome_to_doc(input_file="", kmer=16, label="", f5=""):
 @click.option('--dim', default=100, help='embedding dimension [default: 100]')
 @click.option('--ws', default=5, help='window size [default: 5]')
 @click.option('--thread', default=10, help='threads [default: 10]')
+@click.option('--minn', default=4, help='minimum nmer [default: 4]')
+@click.option('--maxn', default=5, help='maximum nmer [default: 5]')
 @click.option('--mincount', default=5, help='minimum kmer count [default: 5]')
 
-def train_word_vectors(inputfile, outdir, kmer, epoch, dim, ws, thread, mincount):
+def train_word_vectors(inputfile, outdir, kmer, epoch, dim, ws, thread, mincount, minn, maxn):
     '''
     train word vectors using fasttext.
 
@@ -101,7 +103,9 @@ def train_word_vectors(inputfile, outdir, kmer, epoch, dim, ws, thread, mincount
         -ws {ws} \
         -epoch {epoch} \
         -thread {thread} \
-        -minCount {mincount} '
+        -minCount {mincount} \
+        -minn {minn} \
+        -maxn {maxn}'
     log.info(fasttext_cmd)
     os.system(fasttext_cmd)
     log.info('The process is done :)')
