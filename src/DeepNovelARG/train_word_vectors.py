@@ -106,7 +106,7 @@ def train_word_vectors(inputfile, outdir, kmer, epoch, dim, ws, thread, mincount
         -minCount {mincount} \
         -minn {minn} \
         -maxn {maxn} \
-        - lr {lr} \
+        -lr {lr} \
         -wordNgrams {wordNgrams} '
 
     log.info(fasttext_cmd)
