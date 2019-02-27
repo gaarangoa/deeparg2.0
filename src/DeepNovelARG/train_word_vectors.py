@@ -97,8 +97,6 @@ def train_word_vectors(inputfile, outdir, kmer, epoch, dim, ws, thread, mincount
     fasttext_cmd = f'fasttext skipgram \
         -input {outdir}/sentences.tsv \
         -output {outdir}/model \
-        -minn 4 \
-        -maxn 9 \
         -dim {dim} \
         -ws {ws} \
         -epoch {epoch} \
