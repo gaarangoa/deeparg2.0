@@ -49,7 +49,7 @@ def genome_to_doc(input_file="", kmer=16, label="", f5=""):
 @click.option('--outdir', default='', required=True, help='directory where the word2vec model was downloaded')
 @click.option('--kmer', default=11, help='kmer length [default: 11]')
 @click.option('--epoch', default=100, help='number of epochs [default: 100]')
-@click.option('--dim', default=512, help='embedding dimension [default: 512]')
+@click.option('--dim', default=100, help='embedding dimension [default: 100]')
 @click.option('--ws', default=5, help='window size [default: 5]')
 @click.option('--thread', default=10, help='threads [default: 10]')
 @click.option('--mincount', default=5, help='minimum kmer count [default: 5]')
@@ -83,7 +83,7 @@ def train_word_vectors(inputfile, outdir, kmer, epoch, dim, ws, thread, mincount
     log = logging.getLogger()
 
     log.info(f'getting sentences from {inputfile}: started')
-    x = genome_to_doc(input_file=inputfile, kmer=11)
+    x = genome_to_doc(input_file=inputfile, kmer=kmer)
     log.info(f'getting sentences from {inputfile}: done')
 
     log.info(f'storing preprocesed file to {outdir}/sentences.tsv')

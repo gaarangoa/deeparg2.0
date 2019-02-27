@@ -112,7 +112,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
             'arg_class_output': 'categorical_crossentropy'
         },
         loss_weights={
-            'arg_group_output': 1.0,
+            'arg_group_output': 0.5,
             'arg_class_output': 1.0
         },
         metrics=['accuracy']
