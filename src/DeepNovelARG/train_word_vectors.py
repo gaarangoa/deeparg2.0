@@ -55,10 +55,10 @@ def genome_to_doc(input_file="", kmer=16, label="", f5=""):
 @click.option('--minn', default=4, help='minimum nmer [default: 4]')
 @click.option('--maxn', default=5, help='maximum nmer [default: 5]')
 @click.option('--lr', default=0.5, help='learning rate [default: 0.5]')
-@click.option('--wordNgrams', default=1, help='word n grams [default: 1]')
+@click.option('--word_ngrams', default=1, help='word n grams [default: 1]')
 @click.option('--mincount', default=5, help='minimum kmer count [default: 5]')
 
-def train_word_vectors(inputfile, outdir, kmer, epoch, dim, ws, thread, mincount, minn, maxn, lr, wordNgrams):
+def train_word_vectors(inputfile, outdir, kmer, epoch, dim, ws, thread, mincount, minn, maxn, lr, word_ngrams):
     '''
     train word vectors using fasttext.
 
@@ -107,7 +107,7 @@ def train_word_vectors(inputfile, outdir, kmer, epoch, dim, ws, thread, mincount
         -minn {minn} \
         -maxn {maxn} \
         -lr {lr} \
-        -wordNgrams {wordNgrams} '
+        -wordNgrams {word_ngrams} '
 
     log.info(fasttext_cmd)
     os.system(fasttext_cmd)
