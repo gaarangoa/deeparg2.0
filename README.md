@@ -1,28 +1,27 @@
 # DeepARG v2.0
 This repository contains the update of deepARG (deep learning based approach for antibiotic resistance gene annotation)
 
-## Requierements
+## Train
 
-* Python^3.6
-
-### Install fasttext
-
-    wget https://github.com/facebookresearch/fastText/archive/v0.1.0.zip
-    unzip v0.1.0.zip
-    cd fastText-0.1.0
-    make
-
-### Download model to local machine
-
-    wget https://bench.cs.vt.edu/ftp/data/gustavo1/novelDeepARG/model.gz
-    gunzip model.gz
+DeepARG+ has been released in a docker image to avoid library issues and conflict with newer versions of the libraries.
 
 
-## Install
+    docker run --runtime=nvidia -it -v $PWD:/data/  --rm gaarangoa/deepargplus:latest deepARG+ train \
+        --inputdir /data/ \
+        --outdir /data/ \
+        --prefix DL \
+        --epoch 10 \
+        --batch 32
 
-    git clone https://github.com/gaarangoa/deeparg2.0.git
-    cd deeparg2.0
-    pip3 install . --upgrade --user
+## Predict
+
+    docker run --runtime=nvidia -it -v $PWD:/data/  --rm gaarangoa/deepargplus:latest deepARG+  predict \
+        --inputfile /data/tests/b.fasta \
+        --wordvec-model /data/wvecmodel/model.bin \
+        --deeparg-model /data/DL.001.hdf5 \
+        --deeparg-parameters /data/DL.parameters.json \
+        --outdir /data/tests/ \
+        --prefix bla
 
 ## Training
 
