@@ -12,7 +12,7 @@ setup(
         'ete3',
         'h5py',
         'tqdm',
-        'tensorflow==1.10.1',
+        # 'tensorflow==1.13.1',
         'sklearn'
     ],
     entry_points='''

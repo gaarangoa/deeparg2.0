@@ -26,7 +26,7 @@ def predict(inputfile, wordvec_model, deeparg_model, deeparg_parameters, outdir,
 
     """
 
-    log_file = logging.FileHandler(filename=outdir + f'/{prefix}.log',)
+    log_file = logging.FileHandler(filename=outdir + '/'+prefix+'.log',)
     log_stdout = logging.StreamHandler(sys.stdout)
     handlers = [log_file, log_stdout]
 
