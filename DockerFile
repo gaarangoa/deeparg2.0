@@ -1,6 +1,7 @@
 FROM tensorflow/tensorflow:1.13.1-gpu-py3
 
-ADD . /dplus/
+ADD ./src /dplus/src
+
 WORKDIR /dplus/src/
 RUN pip install . --upgrade
 
@@ -12,6 +13,8 @@ RUN wget https://github.com/facebookresearch/fastText/archive/v0.2.0.zip &&\
     make && \
     cp fasttext /usr/bin/ &&\
     chmod +x /usr/bin/fasttext
+
+
 
 # Download models from server @ bench.cs.vt
 
