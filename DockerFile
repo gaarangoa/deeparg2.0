@@ -1,0 +1,11 @@
+FROM tensorflow/tensorflow:1.13.1-gpu-py3
+
+ADD . /data/src/
+WORKDIR /data/src/
+RUN pip install . --upgrade
+
+# Download models from server @ bench.cs.vt
+
+CMD [ "deepARG+" ]
+
+# docker build .  -f ../DockerFile --force-rm -t deepargplus:1.0
