@@ -1,2 +1,9 @@
 database
 logs
+test
+logs
+model
+validation
+*.pyc
+**/*.pyc
+data

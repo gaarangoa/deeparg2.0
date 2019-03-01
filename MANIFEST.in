@@ -1,4 +1,0 @@
-recursive-exclude test *
-recursive-exclude model *
-recursive-exclude logs *
-recursive-exclude database *
