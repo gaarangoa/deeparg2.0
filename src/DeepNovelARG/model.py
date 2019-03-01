@@ -120,15 +120,15 @@ class DeepARG():
         ################################################
 
         # arg groups (names)
-        arg_groups_hidden_input = keras.layers.Dense(
-            300,
-            activation='relu'
-        )(wv_nn)
-        arg_groups_output = keras.layers.Dense(
-            self.total_arg_groups,
-            activation="softmax",
-            name="arg_group_output"
-        )(arg_groups_hidden_input)
+        # arg_groups_hidden_input = keras.layers.Dense(
+        #     300,
+        #     activation='relu'
+        # )(wv_nn)
+        # arg_groups_output = keras.layers.Dense(
+        #     self.total_arg_groups,
+        #     activation="softmax",
+        #     name="arg_group_output"
+        # )(arg_groups_hidden_input)
 
         # arg classes (antibiotics)
         arg_class_hidden_input = keras.layers.Dense(
@@ -149,7 +149,7 @@ class DeepARG():
             ],
             outputs=[
                 arg_class_output,
-                arg_groups_output
+                # arg_groups_output
             ]
         )
 

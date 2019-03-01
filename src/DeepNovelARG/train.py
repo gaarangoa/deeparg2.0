@@ -108,11 +108,11 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
     model.compile(
         optimizer='adam',
         loss={
-            'arg_group_output': 'categorical_crossentropy',
+            # 'arg_group_output': 'categorical_crossentropy',
             'arg_class_output': 'categorical_crossentropy'
         },
         loss_weights={
-            'arg_group_output': 0.5,
+            # 'arg_group_output': 0.5,
             'arg_class_output': 1.0
         },
         metrics=['accuracy']
@@ -140,7 +140,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
         },
         {
             'arg_class_output': train_class_labels,
-            'arg_group_output': train_group_labels
+            # 'arg_group_output': train_group_labels
         },
         epochs=epoch,
         batch_size=batch,
@@ -151,7 +151,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
             },
             {
                 'arg_class_output': test_class_labels,
-                'arg_group_output': test_group_labels
+                # 'arg_group_output': test_group_labels
             }
         ),
         callbacks=[tensorboard, checkpoint],
