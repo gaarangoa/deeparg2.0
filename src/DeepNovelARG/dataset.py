@@ -10,12 +10,15 @@ IUPAC_CODES = {'A': 1.8, 'C': 2.5, 'D': -3.5, 'E': -3.5, 'F': 2.8, 'G': -0.4, 'H
 IUPAC_CODES_1 = {'A': 0.0373, 'C': 0.0829, 'D': 0.1263, 'E': 0.0058, 'F': 0.0946, 'G': 0.0050, 'H': 0.0242, 'I': 0, 'K': 0.0371, 'L': 0,
                  'M': 0.0823, 'N': 0.0036, 'P': 0.0198, 'Q': 0.0761, 'R': 0.0959, 'S': 0.0829, 'T': 0.0941, 'V': 0.0057, 'W': 0.0548, 'Y': 0.0516, '*': 0}
 
+IUPAC_CODES_2 = {'A': -1, 'C': -2, 'D': -3, 'E': -4, 'F': -5, 'G': -6, 'H': -7, 'I': -8, 'K': -9, 'L': -10,
+                 'M': 1, 'N': 2, 'P': 3, 'Q': 4, 'R': 5, 'S': 6, 'T': 7, 'V': 8, 'W': 9, 'Y': 10, '*': 0}
+
 
 def aa2int(i):
     try:
-        return IUPAC_CODES[i]
+        return IUPAC_CODES_2[i]
     except Exception as e:
-        return IUPAC_CODES['*']
+        return IUPAC_CODES_2['*']
 
 
 def obtain_dataset_wordvectors(dataset_file='', labels_file='', maxlen=1500):
