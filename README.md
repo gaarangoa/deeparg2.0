@@ -13,6 +13,14 @@ DeepARG+ has been released in a docker image to avoid library issues and conflic
         --epoch 10 \
         --batch 32
 
+
+    deepARG+ train         \
+        --inputdir ./         \
+        --outdir ./         \
+        --prefix DL         \
+        --epoch 2    \
+        --batch 32
+
 ## Predict
 
     docker run --runtime=nvidia -it -v $PWD:/data/  --rm gaarangoa/deepargplus:latest deepARG+  predict \
@@ -22,6 +30,9 @@ DeepARG+ has been released in a docker image to avoid library issues and conflic
         --deeparg-parameters /data/DL.parameters.json \
         --outdir /data/tests/ \
         --prefix bla
+
+
+        deepARG+ predict --inputfile b.fa --wordvec-model ../wvecmodel/model.bin --deeparg-model ../DL.001.hdf5 --deeparg-parameters ../DL.parameters.json --outdir ./ --prefix bla
 
 ## Training
 

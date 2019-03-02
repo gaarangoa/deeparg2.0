@@ -117,7 +117,8 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
     log.info("Loading training dataset: wordvectors and numerical signals")
     train_dataset_wordvectors, train_dataset_numerical = obtain_dataset_wordvectors(
         dataset_file=inputdir + "/train.input.kmers.tsv.sentences.wv",
-        labels_file=inputdir + "/train.input.kmers.tsv.headers",
+        # labels_file=inputdir + "/train.input.kmers.tsv.headers",
+        sequence_file=inputdir + "/train.input.kmers.tsv.sentences",
         maxlen=maxlen_conv,
     )
 
@@ -127,7 +128,8 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
     log.info("Loading testing dataset: ")
     test_dataset_wordvectors, test_dataset_numerical = obtain_dataset_wordvectors(
         dataset_file=inputdir + "/test.input.kmers.tsv.sentences.wv",
-        labels_file=inputdir + "/test.input.kmers.tsv.headers",
+        # labels_file=inputdir + "/test.input.kmers.tsv.headers",
+        sequence_file=inputdir + "/test.input.kmers.tsv.sentences",
         maxlen=maxlen_conv,
     )
 
