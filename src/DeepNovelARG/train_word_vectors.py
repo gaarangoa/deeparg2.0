@@ -118,7 +118,7 @@ def train_word_vectors(
             fo.write(" ".join(j) + "\n")
 
     fasttext_cmd = (
-        "fasttext skipgram \
+        "fasttext cbow \
         -input "
         + outdir
         + "/sentences.tsv \
