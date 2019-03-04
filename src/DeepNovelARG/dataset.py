@@ -79,9 +79,9 @@ IUPAC_CODES_2 = {
 
 def aa2int(i):
     try:
-        return 100 * IUPAC_CODES_1[i]
+        return 100 * IUPAC_CODES[i]
     except Exception as e:
-        return 100 * IUPAC_CODES_1["*"]
+        return 100 * IUPAC_CODES["*"]
 
 
 def obtain_dataset_wordvectors(
