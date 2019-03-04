@@ -120,7 +120,7 @@ def train_word_vectors(
             fo.write(" ".join(j) + " " + i['label'] + "\n")
 
     fasttext_cmd = (
-        "fasttext cbow \
+        "fasttext supervised \
         -input "
         + outdir
         + "/sentences.tsv \
