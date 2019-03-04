@@ -145,8 +145,10 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
 
     log.info("compiling deep learning model deepARG+")
 
+    optimizer = keras.optimizers.Adam(lr=0.001, decay=0.0001)
+
     model.compile(
-        optimizer="adam",
+        optimizer=optimizer,
         loss={
             # 'arg_group_output': 'categorical_crossentropy',
             "arg_class_output": "categorical_crossentropy"
@@ -155,7 +157,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
             # 'arg_group_output': 0.5,
             "arg_class_output": 1.0
         },
-        metrics=["accuracy"],
+        metrics=[keras.metrics.Accuracy(), keras.metrics.Precision(), keras.metrics.Recall()],
     )
 
     log.info("Storing deepARG+ metadata")
@@ -164,7 +166,7 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
 
     json.dump(
         {
-            "optimizer": optimizer,
+            "optimizer": "Adam",
             "epochs": epoch,
             "classes_dict": classes,
             "groups_dict": groups,
