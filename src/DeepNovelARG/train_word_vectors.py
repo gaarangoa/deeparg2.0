@@ -128,31 +128,31 @@ def train_word_vectors(
         + outdir
         + "/model \
         -dim "
-        + dim
+        + str(dim)
         + " \
         -ws "
-        + ws
+        + str(ws)
         + " \
         -epoch "
-        + epoch
+        + str(epoch)
         + " \
         -thread "
-        + thread
+        + str(thread)
         + " \
         -minCount "
-        + mincount
+        + str(mincount)
         + " \
         -minn "
-        + minn
+        + str(minn)
         + " \
         -maxn "
-        + maxn
+        + str(maxn)
         + " \
         -lr "
-        + lr
+        + str(lr)
         + " \
         -wordNgrams "
-        + word_ngrams
+        + str(word_ngrams)
     )
 
     log.info(fasttext_cmd)
