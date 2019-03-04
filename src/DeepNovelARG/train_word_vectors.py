@@ -29,13 +29,14 @@ def genearte_genomes(genome="ATCGATATACCA", k=3, words=50):
     return np.array(sentences)
 
 
-def genome_to_doc(input_file="", kmer=16, label="", f5=""):
+def genome_to_doc(input_file="", kmer=16, f5=""):
     """ This function transforms a sequence genome to a document of kmers """
 
     records = []
     for record in SeqIO.parse(input_file, "fasta"):
         _genome = str(record.seq).upper()
         _kmer_count = int(len(_genome) / kmer)
+        label = "__label__" + record.description.split('|')[1]
         records.append(
             {
                 "sentences": genearte_genomes(genome=_genome, k=kmer),
@@ -113,9 +114,10 @@ def train_word_vectors(
 
     log.info("storing preprocesed file to outdir/sentences.tsv")
     fo = open(outdir + "/sentences.tsv", "w")
+
     for i in tqdm(x):
         for j in i["sentences"]:
-            fo.write(" ".join(j) + "\n")
+            fo.write(" ".join(j) + " " + i['label'] + "\n")
 
     fasttext_cmd = (
         "fasttext cbow \
