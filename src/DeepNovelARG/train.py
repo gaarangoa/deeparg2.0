@@ -159,9 +159,12 @@ def train(inputdir, outdir, epoch, batch, maxlen_conv, prefix):
     )
 
     log.info("Storing deepARG+ metadata")
+
+    optimizer = keras.optimizers.Adam(lr=0.001, decay=0.0001)
+
     json.dump(
         {
-            "optimizer": "adam",
+            "optimizer": optimizer,
             "epochs": epoch,
             "classes_dict": classes,
             "groups_dict": groups,

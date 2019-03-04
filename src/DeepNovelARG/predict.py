@@ -131,27 +131,44 @@ def predict(
     log.info("Write results for classes annotation")
     fo = open(outdir + "/" + prefix + ".predicted.classes.txt", "w")
     fo.write("#Query\tProbability\tPrediction\n")
-    for _ix in tqdm(range(len(ynew[0]))):
-        y_pred = ynew[0][_ix]
-        query = file_order[_ix]
-        predictions = np.where(y_pred >= minp)[0]
 
-        print(y_pred)
+    for ip, probabilities in tqdm(enumerate(ynew)):
 
-        if not predictions:
+        query = file_order[ip]
+        best_probabilities = np.where(probabilities >= minp)
+
+        if not best_probabilities:
             continue
 
-        for ix in predictions:
+        for index_probability in np.nditer(best_probabilities):
             fo.write(
                 "\t".join(
                     [
                         query,
-                        str(round(y_pred[ix], 2)),
-                        metadata["reverse_classes_dict"][str(ix)],
+                        str(probabilities[index_probability]),
+                        metadata["reverse_classes_dict"][str(index_probability)],
                     ]
                 )
                 + "\n"
             )
+
+    # for _ix in tqdm(range(len(ynew[0]))):
+    #     y_pred = ynew[0][_ix]
+    #     query = file_order[_ix]
+    #     predictions = np.where(y_pred >= minp)[0]
+
+    #     for ix in predictions:
+    #         print(ix, query, y_pred)
+    # fo.write(
+    #     "\t".join(
+    #         [
+    #             query,
+    #             str(round(y_pred[ix], 2)),
+    #             metadata["reverse_classes_dict"][str(ix)],
+    #         ]
+    #     )
+    #     + "\n"
+    # )
 
     # log.info("Write results for groups/genes annotation")
     # fo = open(outdir + "/" + prefix + ".predicted.groups.txt", "w")

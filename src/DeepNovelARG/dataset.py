@@ -79,9 +79,9 @@ IUPAC_CODES_2 = {
 
 def aa2int(i):
     try:
-        return IUPAC_CODES_2[i]
+        return 100 * IUPAC_CODES[i]
     except Exception as e:
-        return IUPAC_CODES_2["*"]
+        return 100 * IUPAC_CODES["*"]
 
 
 def obtain_dataset_wordvectors(
@@ -97,7 +97,7 @@ def obtain_dataset_wordvectors(
         dataset.append(item)
         lengths.append(len(item))
 
-    for ix, i in tqdm(open(sequence_file)):
+    for i in tqdm(open(sequence_file)):
         item = [[aa2int(k)] for k in i]
         sequences.append(item)
 
