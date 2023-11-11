@@ -1,5 +1,5 @@
 # DNN-ARG plus v2.0
-This is an experimental version of deepARG, please see https://github.com/gaarangoa/deeparg 
+This is an experimental model. This repository **is not deeparg**, please use deeparg repository at https://github.com/gaarangoa/deeparg 
 ## Train
 
 DeepARG+ has been released in a docker image to avoid library issues and conflict with newer versions of the libraries.
